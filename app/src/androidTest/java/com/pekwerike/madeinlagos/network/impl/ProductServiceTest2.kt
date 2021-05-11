@@ -55,12 +55,16 @@ class ProductServiceTest2 {
     @Test
     fun getAllProduct() {
         runBlocking {
-
             `when`(productServiceAPI.getAllProduct()).thenReturn(
                 NetworkResult.Success.AllProducts(
-                     moshi.adapter<List<Product>>().fromJson(FakeDataSource.getProducts(context)) ?: listOf()
+                    moshi.adapter<List<Product>>().fromJson(FakeDataSource.getProducts(context))
+                        ?: listOf()
                 )
             )
+
+            val networkResult = productServiceAPI.getAllProduct()
+            assert(networkResult is NetworkResult.Success.AllProducts)
+            assertEquals("FI444", (networkResult as NetworkResult.Success.AllProducts).products[0].id)
         }
     }
 
