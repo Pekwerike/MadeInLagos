@@ -37,7 +37,19 @@ class ProductServiceTest {
         runBlocking {
             when (val networkResult = productService.getAllProduct()) {
                 is NetworkResult.Success.AllProducts -> {
-                    Log.i("NetworkResult", networkResult.products.size.toString())
+                    assert(networkResult.products.isNotEmpty())
+                    assertEquals(11, networkResult.products.size)
+                    val firstProduct = networkResult.products[0]
+                    assertEquals("FI444", firstProduct.id)
+                    assertEquals("$", firstProduct.currency)
+                    assertEquals(69, firstProduct.price)
+                    assertEquals("product", firstProduct.name)
+                    assertEquals("description", firstProduct.description)
+                }
+                is NetworkResult.NoInternetConnection -> {
+                    assert(true)
+                    // display a log message
+                    // Log.i("NettyResult", "No Internet Connection")
                 }
                 else -> {
 
