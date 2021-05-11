@@ -1,12 +1,13 @@
-package com.pekwerike.madeinlagos
+package com.pekwerike.madeinlagos.network.impl
 
-import android.app.Application
-import android.util.Log
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import com.pekwerike.madeinlagos.FakeDataSource
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
-import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.ktor.client.*
@@ -21,35 +22,43 @@ import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
-import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
+@HiltAndroidTest
 @RunWith(MockitoJUnitRunner::class)
-class ProductServiceTest {
+class ProductServiceTest2 {
 
     @Mock
     lateinit var productServiceAPI: ProductServiceAPI
+    private val context = ApplicationProvider.getApplicationContext<Context>()
 
+    private var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var moshi: Moshi
 
     @InternalAPI
     @Before
     fun setUp() {
+        hiltRule.inject()
     }
 
     @After
     fun tearDown() {
     }
 
+    @ExperimentalStdlibApi
     @Test
-    fun getAllProduct(){
+    fun getAllProduct() {
         runBlocking {
+
             `when`(productServiceAPI.getAllProduct()).thenReturn(
                 NetworkResult.Success.AllProducts(
-
+                     moshi.adapter<List<Product>>().fromJson(FakeDataSource.getProducts(context)) ?: listOf()
                 )
             )
         }
