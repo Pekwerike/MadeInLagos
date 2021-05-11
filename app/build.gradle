@@ -52,4 +52,7 @@ dependencies {
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // moshi
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
 }

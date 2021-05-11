@@ -8,5 +8,5 @@ sealed class NetworkResult {
     }
 
     data class HttpError(val errorCode: Int) : NetworkResult()
-    object NoInterntConnection : NetworkResult()
+    object NoInternetConnection : NetworkResult()
 }
