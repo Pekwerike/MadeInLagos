@@ -1,5 +1,9 @@
 package com.pekwerike.madeinlagos.di
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import com.pekwerike.madeinlagos.network.impl.ProductService
@@ -18,18 +22,13 @@ import io.ktor.client.features.json.*
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkDIModule {
+class NetworkDIModule{
 
     @Provides
     fun getMoshi(): Moshi {
         return Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
-    }
-
-    @Provides
-    fun getMoshiProductListAdapter(moshi: Moshi): JsonAdapter<List<Product>> {
-        return moshi.adapter(Types.newParameterizedType(List::class.java, Product::class.java))
     }
 
     @Provides

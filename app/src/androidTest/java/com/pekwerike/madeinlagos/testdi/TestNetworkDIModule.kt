@@ -27,8 +27,7 @@ import io.ktor.http.*
  TestNetworkDIModule replaces the NetworkDIModule with a mock implementation
  of the HttpClient class for stable network interaction
 */
-
-
+/*
 @TestInstallIn(
     components = [SingletonComponent::class],
     replaces = [NetworkDIModule::class]
@@ -63,12 +62,19 @@ class TestNetworkDIModule {
                                 status = HttpStatusCode.OK
                             )
                         }
+
+                        "https://tour.silent.ws/product/FI444/" -> {
+                            respond(
+                                content = context.getString(R.string.single_product_http_response),
+                                status = HttpStatusCode.OK
+                            )
+                        }
                         else -> {
-                            respond(content = "I salute una", status = HttpStatusCode.OK)
+                            respond(content = "Malformed URL", status = HttpStatusCode.BadRequest)
                         }
                     }
                 }
             }
         }
     }
-}
+}*/

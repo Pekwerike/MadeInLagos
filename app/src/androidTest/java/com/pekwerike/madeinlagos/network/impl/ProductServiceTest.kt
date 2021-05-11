@@ -2,6 +2,7 @@ package com.pekwerike.madeinlagos.network.impl
 
 import android.util.Log
 import com.pekwerike.madeinlagos.model.NetworkResult
+import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -38,7 +39,7 @@ class ProductServiceTest {
             when (val networkResult = productService.getAllProduct()) {
                 is NetworkResult.Success.AllProducts -> {
                     assert(networkResult.products.isNotEmpty())
-                    assertEquals(11, networkResult.products.size)
+                    assert(networkResult.products.isNotEmpty())
                     val firstProduct = networkResult.products[0]
                     assertEquals("FI444", firstProduct.id)
                     assertEquals("$", firstProduct.currency)
@@ -47,7 +48,7 @@ class ProductServiceTest {
                     assertEquals("description", firstProduct.description)
                 }
                 is NetworkResult.NoInternetConnection -> {
-                    assert(true)
+                    assert(false)
                     // display a log message
                     // Log.i("NettyResult", "No Internet Connection")
                 }
@@ -60,10 +61,48 @@ class ProductServiceTest {
 
     @Test
     fun createProduct() {
+        runBlocking {
+            val networkResult = productService.createProduct(
+                Product(
+                    id = "H1C12",
+                    name = "product",
+                    description = "description",
+                    currency = "$",
+                    price = 100
+                )
+            )
+            when (networkResult) {
+                is NetworkResult.Success.NoResponse -> {
+                    assert(true)
+                }
+                is NetworkResult.HttpError -> {
+                    assert(false)
+                }
+                is NetworkResult.NoInternetConnection -> {
+                    assert(false)
+                }
+            }
+        }
     }
 
     @Test
     fun getProductById() {
+        runBlocking {
+            // irrespective of the chosen id, mock server returns a product with the id of FI444
+            when (val networkResult = productService.getProductById("FI444")) {
+                is NetworkResult.Success.SingleProduct -> {
+                    assertEquals("FI444", networkResult.product.id)
+                    assertEquals("product", networkResult.product.name)
+                    assertEquals("description", networkResult.product.description)
+                }
+                is NetworkResult.NoInternetConnection -> {
+                    assert(false)
+                }
+                is NetworkResult.Success.NoResponse -> {
+                    assertTrue(false)
+                }
+            }
+        }
     }
 
     @Test
