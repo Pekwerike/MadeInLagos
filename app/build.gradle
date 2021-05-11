@@ -45,11 +45,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     // ktor
-    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-core-jvm:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"
     implementation "io.ktor:ktor-client-jackson:$ktor_version"
-    implementation "io.ktor:ktor-client-mock:$ktor_version"
-    implementation "io.ktor:ktor-client-json:$ktor_version"
+    implementation "io.ktor:ktor-client-json-jvm:$ktor_version"
+    implementation "io.ktor:ktor-client-mock-jvm:$ktor_version"
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
@@ -59,4 +59,10 @@ dependencies {
 
     // moshi
     implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+    // mockito
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+
+    // mock webserver
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.6.0"
 }

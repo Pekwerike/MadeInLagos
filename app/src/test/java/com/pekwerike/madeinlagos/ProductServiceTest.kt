@@ -1,11 +1,20 @@
-package com.pekwerike.madeinlagos.network.impl
+package com.pekwerike.madeinlagos
 
+import android.app.Application
 import android.util.Log
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
+import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.ktor.client.*
+import io.ktor.client.engine.mock.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
+import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -13,22 +22,22 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.junit.MockitoJUnitRunner
 import javax.inject.Inject
 
-@HiltAndroidTest
+@RunWith(MockitoJUnitRunner::class)
 class ProductServiceTest {
 
-
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
-
-    @Inject
-    lateinit var productService: ProductServiceAPI
+    @Mock
+    lateinit var productServiceAPI: ProductServiceAPI
 
 
+    @InternalAPI
     @Before
     fun setUp() {
-        hiltRule.inject()
     }
 
     @After
@@ -36,24 +45,16 @@ class ProductServiceTest {
     }
 
     @Test
-    fun getAllProduct() {
+    fun getAllProduct(){
         runBlocking {
-            when (val networkResult = productService.getAllProduct()) {
-                is NetworkResult.Success.AllProducts -> {
-                    assert(networkResult.products.isNotEmpty())
+            `when`(productServiceAPI.getAllProduct()).thenReturn(
+                NetworkResult.Success.AllProducts(
 
-                }
-                is NetworkResult.NoInternetConnection -> {
-                    assert(false)
-                    // display a log message
-                    // Log.i("NettyResult", "No Internet Connection")
-                }
-                else -> {
-
-                }
-            }
+                )
+            )
         }
     }
+
 
     @Test
     fun createProduct() {

@@ -16,7 +16,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import io.ktor.client.*
-import io.ktor.client.engine.android.*
 import io.ktor.client.engine.mock.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
@@ -27,7 +26,7 @@ import io.ktor.http.*
  TestNetworkDIModule replaces the NetworkDIModule with a mock implementation
  of the HttpClient class for stable network interaction
 */
-/*
+
 @TestInstallIn(
     components = [SingletonComponent::class],
     replaces = [NetworkDIModule::class]
@@ -42,10 +41,6 @@ class TestNetworkDIModule {
             .build()
     }
 
-    @Provides
-    fun getMoshiProductListAdapter(moshi: Moshi): JsonAdapter<List<Product>> {
-        return moshi.adapter(Types.newParameterizedType(List::class.java, Product::class.java))
-    }
 
     @Provides
     fun getHttpClient(@ApplicationContext context: Context): HttpClient {
@@ -56,7 +51,7 @@ class TestNetworkDIModule {
             engine {
                 addHandler { request: HttpRequestData ->
                     when (request.url.fullPath) {
-                        ProductServiceAPI.ALL_PRODUCTS_URL -> {
+                        ProductServiceAPI.BASE_PRODUCT_URL -> {
                             respond(
                                 content = context.getString(R.string.all_products_http_response),
                                 status = HttpStatusCode.OK
@@ -77,4 +72,4 @@ class TestNetworkDIModule {
             }
         }
     }
-}*/
+}
