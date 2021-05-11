@@ -1,10 +1,13 @@
 package com.pekwerike.madeinlagos.di
 
 import com.pekwerike.madeinlagos.model.Product
+import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import com.pekwerike.madeinlagos.network.impl.ProductService
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
