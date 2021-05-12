@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 /*
 ProductDataSource contains functions that parses the product and product reviews json files in
-the assests folder into kotlin objects
+the assets folder into kotlin objects
 */
 class ProductDataSource @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -29,4 +29,12 @@ class ProductDataSource @Inject constructor(
         }
         return moshi.adapter<List<Product>>().fromJson(products.toString()) ?: listOf()
     }
+
+    fun getProductImagesUrl(): List<String> {
+        return context.assets.open("ProductImages").let { inputStream: InputStream ->
+            val inputStreamReader = InputStreamReader(inputStream, "UTF-8")
+            inputStreamReader.readLines()
+        }
+    }
+
 }

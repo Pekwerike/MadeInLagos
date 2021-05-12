@@ -32,7 +32,7 @@ fun List<Product>.toProductEntityList(): List<ProductEntity> = map { product: Pr
     )
 }
 
-fun List<ProductWithReviews>.reviewtoProductList(): List<Product> =
+fun List<ProductWithReviews>.productWithReviewsToProductList(): List<Product> =
     map { productWithReviews: ProductWithReviews ->
         Product(
             id = productWithReviews.product.productId,
@@ -40,6 +40,7 @@ fun List<ProductWithReviews>.reviewtoProductList(): List<Product> =
             description = productWithReviews.product.description,
             currency = productWithReviews.product.currency,
             price = productWithReviews.product.price,
+            productImageUrl = "",
             productReviews = productWithReviews.reviews.toProductReviewList()
         )
     }

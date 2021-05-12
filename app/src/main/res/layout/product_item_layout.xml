@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="product"
+            type="com.pekwerike.madeinlagos.model.Product" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/product_item_layout_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/product_item_layout_product_image_view"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/product_item_layout_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/textview_standard_padding"
+                android:text="@{product.name}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:text="@{product.price}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

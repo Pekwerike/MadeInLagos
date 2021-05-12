@@ -1,27 +1,44 @@
 package com.pekwerike.madeinlagos.repository
 
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
-import com.pekwerike.madeinlagos.database.ProductDAO
-import com.pekwerike.madeinlagos.database.ProductReviewDAO
 import com.pekwerike.madeinlagos.database.ProductWithReviews
 import com.pekwerike.madeinlagos.mappers.productReviewToProductReviewEntityList
+import com.pekwerike.madeinlagos.mappers.productWithReviewsToProductList
 import com.pekwerike.madeinlagos.mappers.toProductEntityList
+import com.pekwerike.madeinlagos.mappers.toProductReviewList
 import com.pekwerike.madeinlagos.model.NetworkResult
+import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class MadeInLagosProductRepository @Inject constructor(
     madeInLagosLocalDatabase: MadeInLagosLocalDatabase,
     private val networkProductService: ProductServiceAPI,
-    private val networkProductReview: ProductReviewAPI
+    private val networkProductReview: ProductReviewAPI,
+    private val productDataSource: ProductDataSource,
 ) : MainRepositoryAPI {
     private val productDao = madeInLagosLocalDatabase.productDAO()
     private val productReviewDao = madeInLagosLocalDatabase.productReviewDAO()
+    private val allImages = productDataSource.getProductImagesUrl()
 
-    override val allProductsWithReviews: Flow<List<ProductWithReviews>> =
-        madeInLagosLocalDatabase.productDAO().getAllProductWithReviews()
+    override val allProductsWithReviews: Flow<List<Product>> =
+        madeInLagosLocalDatabase.productDAO().getAllProductWithReviews().map {
+            it.map { productWithReviews: ProductWithReviews ->
+                Product(
+                    id = productWithReviews.product.productId,
+                    name = productWithReviews.product.name,
+                    description = productWithReviews.product.description,
+                    currency = productWithReviews.product.currency,
+                    price = productWithReviews.product.price,
+                    productImageUrl = allImages.random(),
+                    productReviews = productWithReviews.reviews.toProductReviewList()
+                )
+            }
+        }
 
     override suspend fun refreshProductList(): NetworkResult {
         // fetch products from network
