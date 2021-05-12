@@ -2,10 +2,17 @@ package com.pekwerike.madeinlagos.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.pekwerike.madeinlagos.model.ProductRating
 
-@Entity(tableName = "product_review_table")
+@Entity(
+    tableName = "product_review_table", foreignKeys = [ForeignKey(
+        entity = ProductEntity::class, parentColumns = ["product_id"],
+        childColumns = ["product_id"],
+        onDelete = ForeignKey.CASCADE, onUpdate = ForeignKey.CASCADE
+    )]
+)
 data class ProductReviewEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "product_review_id")

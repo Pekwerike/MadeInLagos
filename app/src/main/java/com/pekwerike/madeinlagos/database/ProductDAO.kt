@@ -1,10 +1,7 @@
 package com.pekwerike.madeinlagos.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -16,7 +13,8 @@ interface ProductDAO {
         insertAllProducts(productEntityList)
     }
 
-    @Insert
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllProducts(productEntityList: List<ProductEntity>)
 
     @Query("SELECT * FROM product_table WHERE product_id = :productId")
@@ -31,7 +29,7 @@ interface ProductDAO {
 
     @Transaction
     @Query("SELECT * FROM product_table WHERE product_id = :productId")
-    fun getProductWithReviews(productId: String): Flow<ProductWithReviews>
+    fun getProductWithReviewsByProductId(productId: String): Flow<ProductWithReviews>
 
     @Transaction
     @Query("DELETE FROM product_table")

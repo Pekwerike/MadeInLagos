@@ -5,5 +5,6 @@ data class Product(
     val name: String = "product",
     val description: String = "description",
     val currency: String,
-    val price: Int
+    val price: Int,
+    val productReviews: List<ProductReview> = listOf()
 )

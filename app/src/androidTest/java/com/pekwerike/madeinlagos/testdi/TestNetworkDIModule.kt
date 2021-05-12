@@ -26,7 +26,7 @@ import io.ktor.http.*
  TestNetworkDIModule replaces the NetworkDIModule with a mock implementation
  of the HttpClient class for stable network interaction
 */
-
+/*
 @TestInstallIn(
     components = [SingletonComponent::class],
     replaces = [NetworkDIModule::class]
@@ -72,4 +72,4 @@ class TestNetworkDIModule {
             }
         }
     }
-}
+}*/
