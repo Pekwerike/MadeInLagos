@@ -35,12 +35,12 @@ class ProductServiceTest2 {
 
     @Mock
     lateinit var productServiceAPI: ProductServiceAPI
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-
-    private var hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var moshi: Moshi
+
+    private val context = ApplicationProvider.getApplicationContext<Context>()
+    private var hiltRule = HiltAndroidRule(this)
 
     @InternalAPI
     @Before
