@@ -12,7 +12,7 @@ list of reviews
 data class ProductWithReviews(
     @Embedded val product: ProductEntity,
     @Relation(
-        parentColumn = "product_id",
+        parentColumn = "id",
         entityColumn = "product_id"
     )
     val reviews: List<ProductReviewEntity>
