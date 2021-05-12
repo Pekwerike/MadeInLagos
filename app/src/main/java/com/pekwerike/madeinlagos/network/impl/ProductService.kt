@@ -17,10 +17,10 @@ import javax.inject.Inject
 
 @Suppress("BlockingMethodInNonBlockingContext")
 class ProductService @Inject constructor(
-    private val httpClient: HttpClient,
-    private val moshi: Moshi,
+        private val httpClient: HttpClient,
+        private val moshi: Moshi,
 
-    ) : ProductServiceAPI {
+        ) : ProductServiceAPI {
 
     @ExperimentalStdlibApi
     override suspend fun getAllProduct(): NetworkResult {
@@ -33,7 +33,7 @@ class ProductService @Inject constructor(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val products =
-                        moshi.adapter<List<Product>>().fromJson(response.readText()) ?: listOf()
+                            moshi.adapter<List<Product>>().fromJson(response.readText()) ?: listOf()
                     NetworkResult.Success.AllProducts(products)
                 }
                 else -> NetworkResult.HttpError(response.status)
@@ -62,7 +62,7 @@ class ProductService @Inject constructor(
                     NetworkResult.HttpError(HttpStatusCode.BadRequest)
                 }
                 else -> {
-                    NetworkResult.NoInternetConnection
+                    NetworkResult.HttpErro(response.status)
                 }
             }
         } catch (unknownHostException: UnknownHostException) {
@@ -76,10 +76,10 @@ class ProductService @Inject constructor(
     override suspend fun getProductById(productId: String): NetworkResult {
         return try {
             val response = httpClient.get<HttpResponse>(
-                String.format(
-                    ProductServiceAPI.SINGLE_PRODUCT_URL,
-                    productId
-                )
+                    String.format(
+                            ProductServiceAPI.SINGLE_PRODUCT_URL,
+                            productId
+                    )
             ) {
                 headers {
                     append(HttpHeaders.AcceptLanguage, "en-US")
@@ -109,10 +109,10 @@ class ProductService @Inject constructor(
     override suspend fun updateProduct(productId: String, product: Product): NetworkResult {
         return try {
             val response = httpClient.put<HttpResponse>(
-                String.format(
-                    ProductServiceAPI.SINGLE_PRODUCT_URL,
-                    productId
-                )
+                    String.format(
+                            ProductServiceAPI.SINGLE_PRODUCT_URL,
+                            productId
+                    )
             ) {
                 contentType(ContentType.Application.Json)
                 body = product
@@ -128,10 +128,10 @@ class ProductService @Inject constructor(
                     }
                 }
                 HttpStatusCode.BadRequest -> {
-                    NetworkResult.HttpError(response.status)
+                    NetworkResult.HttpError(HttpStatusCode.BadRequest)
                 }
                 else -> {
-                    NetworkResult.NoInternetConnection
+                    NetworkResult.HttpError(response.status)
                 }
             }
         } catch (unknownHostException: UnknownHostException) {
@@ -145,19 +145,19 @@ class ProductService @Inject constructor(
     override suspend fun deleteProduct(productId: String): NetworkResult {
         return try {
             val response = httpClient.delete<HttpResponse>(
-                String.format(
-                    ProductServiceAPI.SINGLE_PRODUCT_URL, productId
-                )
+                    String.format(
+                            ProductServiceAPI.SINGLE_PRODUCT_URL, productId
+                    )
             )
             when (response.status) {
                 HttpStatusCode.OK -> {
                     NetworkResult.Success.DeletedProduct
                 }
                 HttpStatusCode.BadRequest -> {
-                    NetworkResult.HttpError(response.status)
+                    NetworkResult.HttpError(HttpStatusCode.BadRequest)
                 }
                 else -> {
-                    NetworkResult.NoInternetConnection
+                    NetworkResult.HttpError(response.status)
                 }
             }
         } catch (unknownHostException: UnknownHostException) {
