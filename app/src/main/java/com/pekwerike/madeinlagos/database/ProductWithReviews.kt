@@ -8,7 +8,6 @@ import androidx.room.Relation
 ProductWithReview data class defines the one-many relationship between a product and its corresponding
 list of reviews
 */
-@Entity(tableName = "product_with_reviews_table")
 data class ProductWithReviews(
     @Embedded val product: ProductEntity,
     @Relation(

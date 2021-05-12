@@ -26,14 +26,14 @@ interface ProductDAO {
     fun getAllProducts(): Flow<List<ProductEntity>>
 
     @Transaction
-    @Query("SELECT * FROM product_with_reviews_table")
+    @Query("SELECT * FROM product_table")
     fun getAllProductWithReviews(): Flow<List<ProductWithReviews>>
 
     @Transaction
-    @Query("SELECT * FROM product_with_reviews_table WHERE product_id = :productId")
+    @Query("SELECT * FROM product_table WHERE product_id = :productId")
     fun getProductWithReviews(productId: String): Flow<ProductWithReviews>
 
     @Transaction
-    @Query("DELETE FROM product_with_reviews_table")
+    @Query("DELETE FROM product_table")
     suspend fun deleteAllProductsWithReviews()
 }
