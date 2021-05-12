@@ -1,4 +1,4 @@
-package com.pekwerike.madeinlagos.network.impl
+package com.pekwerike.madeinlagos.network
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider

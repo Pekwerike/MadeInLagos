@@ -24,8 +24,6 @@ class MadeInLagosLocalDatabaseTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-
     @Inject
     lateinit var madeInLagosLocalDatabase: MadeInLagosLocalDatabase
 

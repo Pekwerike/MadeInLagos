@@ -1,9 +1,7 @@
-package com.pekwerike.madeinlagos.network.impl
+package com.pekwerike.madeinlagos.network
 
-import android.util.Log
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
-import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
