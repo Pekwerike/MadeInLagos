@@ -12,5 +12,8 @@ import dagger.hilt.components.SingletonComponent
 abstract class ProductAPIsDIModule {
 
     @Binds
-    abstract fun getProductServiceAPIImplementation(productService: ProductService) : ProductServiceAPI
+    abstract fun getProductServiceAPIImplementation(productService: ProductServiceImpl) : ProductServiceAPI
+
+    @Binds
+    abstract fun getProductReviewAPIImplementation(productReviewImpl: ProductReviewImpl): ProductReviewAPI
 }

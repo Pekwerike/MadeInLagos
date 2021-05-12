@@ -7,13 +7,13 @@ import com.squareup.moshi.Moshi
 import io.ktor.client.*
 import javax.inject.Inject
 
-class ProductReview @Inject constructor(private val httpClient: HttpClient,
-                                        private val moshi: Moshi) : ProductReviewAPI {
+class ProductReviewImpl @Inject constructor(private val httpClient: HttpClient,
+                                            private val moshi: Moshi) : ProductReviewAPI {
     override suspend fun getProductReviews(productId: String): NetworkResult {
        return try{ val response = httpClient.get<HttpResponse>(String.format(ProductReviewAPI.PRODUCT_REVIEW_BASE_URL, productId))
         when(response.status){
             HttpStatusCode.OK -> {
-                NetworkResult.Success.ProductReveiws(moshi.adapter<List<ProductReview>>().fromJson(response.readText()) ?: listOf())
+                NetworkResult.Success.ProductReveiws(moshi.adapter<List<ProductReviewImpl>>().fromJson(response.readText()) ?: listOf())
             }
 
             HttpStatusCode.BadRequest -> {
@@ -30,16 +30,16 @@ class ProductReview @Inject constructor(private val httpClient: HttpClient,
         }
     }
 
-    override suspend fun postProductReview(productReview: ProductReview): NetworkResult {
+    override suspend fun postProductReview(productReviewImpl: ProductReviewImpl): NetworkResult {
         return try{
-           val response = httpClient.post<HttpResponse>(String.format(ProductReview.PRODUCT_REVIEW_BASE_URL, productReview.productId)){
+           val response = httpClient.post<HttpResponse>(String.format(ProductReviewImpl.PRODUCT_REVIEW_BASE_URL, productReviewImpl.productId)){
                 contentType(Content.Application.Json)
-                body = productReview
+                body = productReviewImpl
                 expectSuccess = true
             }
             when(response.status){
                 HttpStatusCode.OK -> {
-                    val postedReview = moshi.adapter<ProductReview>().fromJson(response.readText())
+                    val postedReview = moshi.adapter<ProductReviewImpl>().fromJson(response.readText())
                     if(postedReview != null){
                      NetworkResult.Success.SingleProductReview(postedReview)
                     }else {

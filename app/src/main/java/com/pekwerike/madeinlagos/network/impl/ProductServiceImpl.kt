@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 
 @Suppress("BlockingMethodInNonBlockingContext")
-class ProductService @Inject constructor(
+class ProductServiceImpl @Inject constructor(
         private val httpClient: HttpClient,
         private val moshi: Moshi,
 
