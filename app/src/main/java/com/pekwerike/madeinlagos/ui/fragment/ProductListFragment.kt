@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.ui.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -38,8 +39,13 @@ class ProductListFragment : Fragment() {
         fragmentProductListBinding = FragmentProductListBinding
             .inflate(inflater, container, false).apply {
                 productListRecyclerView.adapter = productListRecyclerViewAdapter
+                val gridSpanCount = if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                    3
+                }else {
+                    2
+                }
                 productListRecyclerView.layoutManager = StaggeredGridLayoutManager(
-                    2,
+                    gridSpanCount,
                     StaggeredGridLayoutManager.VERTICAL
                 )
                 swipeToRefreshProductList.setOnRefreshListener {
@@ -57,7 +63,6 @@ class ProductListFragment : Fragment() {
         }
         mainActivityViewModel.networkResult.observe(this) {
             it?.let {
-
                 fragmentProductListBinding.swipeToRefreshProductList.isRefreshing = false
             }
 

@@ -1,15 +1,15 @@
-package com.pekwerike.madeinlagos.repository
+package com.pekwerike.madeinlagos.repository.impl
 
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import com.pekwerike.madeinlagos.database.ProductWithReviews
 import com.pekwerike.madeinlagos.mappers.productReviewToProductReviewEntityList
-import com.pekwerike.madeinlagos.mappers.productWithReviewsToProductList
 import com.pekwerike.madeinlagos.mappers.toProductEntityList
 import com.pekwerike.madeinlagos.mappers.toProductReviewList
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

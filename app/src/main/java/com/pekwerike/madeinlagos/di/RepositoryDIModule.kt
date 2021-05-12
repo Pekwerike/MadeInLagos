@@ -1,6 +1,6 @@
 package com.pekwerike.madeinlagos.di
 
-import com.pekwerike.madeinlagos.repository.MadeInLagosProductRepository
+import com.pekwerike.madeinlagos.repository.impl.MadeInLagosProductRepository
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.Binds
 import dagger.Module

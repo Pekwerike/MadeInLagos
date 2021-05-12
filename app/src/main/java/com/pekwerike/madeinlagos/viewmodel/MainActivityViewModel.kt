@@ -3,11 +3,11 @@ package com.pekwerike.madeinlagos.viewmodel
 import androidx.lifecycle.*
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
-import com.pekwerike.madeinlagos.repository.MadeInLagosProductRepository
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +26,10 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun refreshProductList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            _networkResult.value = mainRepositoryAPI.refreshProductList()
+        viewModelScope.launch {
+            _networkResult.value = withContext(Dispatchers.IO) {
+                mainRepositoryAPI.refreshProductList()
+            }!!
         }
     }
 }
