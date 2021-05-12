@@ -62,7 +62,7 @@ class ProductServiceImpl @Inject constructor(
                     NetworkResult.HttpError(HttpStatusCode.BadRequest)
                 }
                 else -> {
-                    NetworkResult.HttpErro(response.status)
+                    NetworkResult.HttpError(response.status)
                 }
             }
         } catch (unknownHostException: UnknownHostException) {

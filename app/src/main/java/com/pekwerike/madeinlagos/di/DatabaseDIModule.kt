@@ -2,6 +2,8 @@ package com.pekwerike.madeinlagos.di
 
 import android.content.Context
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
+import com.pekwerike.madeinlagos.database.ProductDAO
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

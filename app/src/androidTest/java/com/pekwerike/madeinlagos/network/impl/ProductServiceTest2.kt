@@ -1,21 +1,14 @@
 package com.pekwerike.madeinlagos.network.impl
 
 import android.content.Context
-import android.net.Network
 import androidx.test.core.app.ApplicationProvider
-import com.pekwerike.madeinlagos.FakeDataSource
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import com.pekwerike.madeinlagos.utils.ProductDataSource
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.adapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
 import io.ktor.util.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -23,6 +16,7 @@ import org.junit.Before
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Rule
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
@@ -37,10 +31,12 @@ class ProductServiceTest2 {
     lateinit var productServiceAPI: ProductServiceAPI
 
     @Inject
-    lateinit var moshi: Moshi
+    lateinit var productDataSource: ProductDataSource
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
 
     @InternalAPI
     @Before
@@ -58,7 +54,7 @@ class ProductServiceTest2 {
         runBlocking {
             `when`(productServiceAPI.getAllProduct()).thenReturn(
                 NetworkResult.Success.AllProducts(
-                    FakeDataSource.getProducts(context, moshi)
+                    productDataSource.getProducts()
                 )
             )
 
@@ -108,7 +104,7 @@ class ProductServiceTest2 {
         runBlocking {
             `when`(productServiceAPI.getProductById("F1444")).thenReturn(
                 NetworkResult.Success.SingleProduct(
-                    FakeDataSource.getProducts(context, moshi)[0]
+                    productDataSource.getProducts()[0]
                 )
             )
             // irrespective of the chosen id, mock server returns a product with the id of FI444
