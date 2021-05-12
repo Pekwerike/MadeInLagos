@@ -7,8 +7,8 @@ import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.model.ProductReview
 
 /*
-This file contains extension functions that makes it easier to convert between ProductEntity
-and Product types
+This file contains extension functions that makes it easier to convert between RoomDB Entities
+and normal kotlin data classes
 */
 
 fun List<ProductEntity>.toProductList(): List<Product> = map { productEntity: ProductEntity ->
