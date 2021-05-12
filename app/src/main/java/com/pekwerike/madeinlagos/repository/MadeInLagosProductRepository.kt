@@ -20,7 +20,7 @@ class MadeInLagosProductRepository @Inject constructor(
     private val productDao = madeInLagosLocalDatabase.productDAO()
     private val productReviewDao = madeInLagosLocalDatabase.productReviewDAO()
 
-    val allProductsWithReviews: Flow<List<ProductWithReviews>> =
+    override val allProductsWithReviews: Flow<List<ProductWithReviews>> =
         madeInLagosLocalDatabase.productDAO().getAllProductWithReviews()
 
     override suspend fun refreshProductList(): NetworkResult {

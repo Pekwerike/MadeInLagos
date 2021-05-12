@@ -8,6 +8,7 @@ buildscript {
         moshi_version = "1.11.0"
         mockito_version = "3.10.0"
         room_version = "2.3.0"
+        androidx_lifecycle_version = "2.3.1"
     }
     repositories {
         google()
