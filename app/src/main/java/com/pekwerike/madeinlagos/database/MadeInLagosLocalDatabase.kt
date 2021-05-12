@@ -1,4 +1,4 @@
-package com.pekwerike.madeinlagos.cache
+package com.pekwerike.madeinlagos.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -7,6 +7,4 @@ import androidx.room.RoomDatabase
 abstract class MadeInLagosLocalDatabase : RoomDatabase() {
     abstract fun productDAO(): ProductDAO
     abstract fun productReviewDAO(): ProductReviewDAO
-
-
 }

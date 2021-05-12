@@ -1,7 +1,9 @@
 package com.pekwerike.madeinlagos.di
 
+import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
-import com.pekwerike.madeinlagos.network.impl.ProductService
+import com.pekwerike.madeinlagos.network.impl.ProductReviewImpl
+import com.pekwerike.madeinlagos.network.impl.ProductServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

@@ -3,7 +3,7 @@ package com.pekwerike.madeinlagos.di
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.pekwerike.madeinlagos.cache.MadeInLagosLocalDatabase
+import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

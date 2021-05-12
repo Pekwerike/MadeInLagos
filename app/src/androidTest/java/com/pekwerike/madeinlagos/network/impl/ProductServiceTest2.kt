@@ -1,6 +1,7 @@
 package com.pekwerike.madeinlagos.network.impl
 
 import android.content.Context
+import android.net.Network
 import androidx.test.core.app.ApplicationProvider
 import com.pekwerike.madeinlagos.FakeDataSource
 import com.pekwerike.madeinlagos.model.NetworkResult
@@ -57,14 +58,16 @@ class ProductServiceTest2 {
         runBlocking {
             `when`(productServiceAPI.getAllProduct()).thenReturn(
                 NetworkResult.Success.AllProducts(
-                    moshi.adapter<List<Product>>().fromJson(FakeDataSource.getProducts(context))
-                        ?: listOf()
+                    FakeDataSource.getProducts(context, moshi)
                 )
             )
 
             val networkResult = productServiceAPI.getAllProduct()
             assert(networkResult is NetworkResult.Success.AllProducts)
-            assertEquals("FI444", (networkResult as NetworkResult.Success.AllProducts).products[0].id)
+            assertEquals(
+                "FI444",
+                (networkResult as NetworkResult.Success.AllProducts).products[0].id
+            )
         }
     }
 
@@ -72,18 +75,19 @@ class ProductServiceTest2 {
     @Test
     fun createProduct() {
         runBlocking {
-            val networkResult = productService.createProduct(
-                Product(
-                    id = "H1C12",
-                    name = "product",
-                    description = "description",
-                    currency = "$",
-                    price = 100
-                )
+            val product = Product(
+                id = "H1C12",
+                name = "product",
+                description = "description",
+                currency = "$",
+                price = 100
             )
-            when (networkResult) {
-                is NetworkResult.Success.NoResponse -> {
-                    assert(true)
+            `when`(productServiceAPI.createProduct(product)).thenReturn(
+                NetworkResult.Success.SingleProduct(product)
+            )
+            when (val networkResult = productServiceAPI.createProduct(product)) {
+                is NetworkResult.Success.SingleProduct -> {
+                    assertEquals("H1C12", networkResult.product.id)
                 }
                 is NetworkResult.HttpError -> {
                     assert(false)
@@ -91,15 +95,24 @@ class ProductServiceTest2 {
                 is NetworkResult.NoInternetConnection -> {
                     assert(false)
                 }
+                else -> {
+                    assert(false)
+                }
             }
         }
     }
 
+    @ExperimentalStdlibApi
     @Test
     fun getProductById() {
         runBlocking {
+            `when`(productServiceAPI.getProductById("F1444")).thenReturn(
+                NetworkResult.Success.SingleProduct(
+                    FakeDataSource.getProducts(context, moshi)[0]
+                )
+            )
             // irrespective of the chosen id, mock server returns a product with the id of FI444
-            when (val networkResult = productService.getProductById("FI444")) {
+            when (val networkResult = productServiceAPI.getProductById("FI444")) {
                 is NetworkResult.Success.SingleProduct -> {
                     assertEquals("FI444", networkResult.product.id)
                 }
@@ -116,15 +129,19 @@ class ProductServiceTest2 {
     @Test
     fun updateProduct() {
         runBlocking {
-            val networkResult = productService.updateProduct(
+            val product = Product(
+                id = "FI444",
+                name = "updated product name",
+                description = "updated product description",
+                currency = "$",
+                price = 229
+            )
+            `when`(productServiceAPI.updateProduct("FI444", product)).thenReturn(
+                NetworkResult.Success.SingleProduct(product)
+            )
+            val networkResult = productServiceAPI.updateProduct(
                 "FI444",
-                Product(
-                    id = "FI444",
-                    name = "updated product name",
-                    description = "updated product description",
-                    currency = "$",
-                    price = 229
-                )
+                product
             )
             when (networkResult) {
                 is NetworkResult.Success.SingleProduct -> {
@@ -141,7 +158,10 @@ class ProductServiceTest2 {
     @Test
     fun deleteProduct() {
         runBlocking {
-            when (productService.deleteProduct("HBC12")) {
+            `when`(productServiceAPI.deleteProduct("HBC12")).thenReturn(
+                NetworkResult.Success.DeletedProduct
+            )
+            when (productServiceAPI.deleteProduct("HBC12")) {
                 is NetworkResult.Success.DeletedProduct -> {
                     assert(true)
                 }

@@ -1,9 +1,7 @@
-package com.pekwerike.madeinlagos.cache
+package com.pekwerike.madeinlagos.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.OnConflictStrategy
-import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "product_table")

@@ -1,4 +1,4 @@
-package com.pekwerike.madeinlagos.cache
+package com.pekwerike.madeinlagos.database
 
 import androidx.room.Embedded
 import androidx.room.Entity
