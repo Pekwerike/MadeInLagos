@@ -21,6 +21,10 @@ class MainActivityViewModel @Inject constructor(
     val networkResult: LiveData<NetworkResult>
         get() = _networkResult
 
+    private val _selectedProduct = MutableLiveData<Product>()
+    val selectedProduct: LiveData<Product>
+        get() = _selectedProduct
+
     init {
         refreshProductList()
     }
@@ -31,5 +35,9 @@ class MainActivityViewModel @Inject constructor(
                 mainRepositoryAPI.refreshProductList()
             }!!
         }
+    }
+
+    fun selectProduct(product: Product) {
+        _selectedProduct.value = product
     }
 }
