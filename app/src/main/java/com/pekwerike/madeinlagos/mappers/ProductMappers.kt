@@ -54,6 +54,15 @@ fun List<ProductReviewEntity>.toProductReviewList(): List<ProductReview> =
         )
     }
 
+fun List<ProductReview>.productReviewToProductReviewEntityList(): List<ProductReviewEntity> =
+    map { productReview: ProductReview ->
+        ProductReviewEntity(
+            productId = productReview.productId,
+            rating = productReview.rating,
+            text = productReview.text
+        )
+    }
+
 fun ProductWithReviews.productWithReviewsToProduct(): Product =
     Product(
         id = product.productId,

@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.di
 
+import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import com.pekwerike.madeinlagos.network.impl.ProductReviewImpl
