@@ -4,7 +4,7 @@ import com.pekwerike.madeinlagos.database.ProductEntity
 import com.pekwerike.madeinlagos.model.Product
 
 /*
-This file contains extension functions that it easier to convert between ProductEntity
+This file contains extension functions that makes it easier to convert between ProductEntity
 and Product types
 */
 
