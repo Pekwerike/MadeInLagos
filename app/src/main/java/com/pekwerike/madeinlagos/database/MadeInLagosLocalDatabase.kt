@@ -16,7 +16,7 @@ abstract class MadeInLagosLocalDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        var INSTANCE: MadeInLagosLocalDatabase? = null
+        private var INSTANCE: MadeInLagosLocalDatabase? = null
 
         fun getMadeInLagosLocalDatabaseInstance(context: Context): MadeInLagosLocalDatabase {
             return INSTANCE ?: synchronized(this) {
