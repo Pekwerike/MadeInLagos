@@ -13,6 +13,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,6 +42,12 @@ class MadeInLagosLocalDatabaseTest {
         hiltRule.inject()
         productDao = madeInLagosLocalDatabase.productDAO()
         productReviewDao = madeInLagosLocalDatabase.productReviewDAO()
+    }
+
+
+    @After
+    fun tearDown() {
+        madeInLagosLocalDatabase.close()
     }
 
 

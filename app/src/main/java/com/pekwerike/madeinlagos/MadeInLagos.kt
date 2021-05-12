@@ -6,8 +6,4 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class MadeInLagos : Application() {
 
-    override fun onTerminate() {
-
-        super.onTerminate()
-    }
 }

@@ -14,7 +14,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/product_item_layout_card_view"
+        android:id="@+id/product_item_layout_two_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -27,19 +27,19 @@
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/product_item_layout_product_image_view"
+                android:id="@+id/product_item_layout_two_product_image_view"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="200dp"
                 android:scaleType="centerCrop" />
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/product_item_layout_product_name"
+                android:id="@+id/product_item_layout_two_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:lines="1"
                 android:padding="@dimen/textview_standard_padding"
                 android:text="@{productName}"
+                android:lines="1"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textStyle="bold" />
 

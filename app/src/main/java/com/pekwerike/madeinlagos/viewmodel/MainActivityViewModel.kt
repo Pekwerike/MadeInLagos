@@ -1,9 +1,7 @@
 package com.pekwerike.madeinlagos.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.repository.MadeInLagosProductRepository
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
@@ -19,10 +17,17 @@ class MainActivityViewModel @Inject constructor(
     val allProductsWithReviews: LiveData<List<Product>> =
         mainRepositoryAPI.allProductsWithReviews.asLiveData()
 
+    private val _networkResult = MutableLiveData<NetworkResult>(NetworkResult.NoInternetConnection)
+    val networkResult: LiveData<NetworkResult>
+        get() = _networkResult
+
+    init {
+        refreshProductList()
+    }
 
     fun refreshProductList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val networkResult = mainRepositoryAPI.refreshProductList()
+            _networkResult.value = mainRepositoryAPI.refreshProductList()
         }
     }
 }
