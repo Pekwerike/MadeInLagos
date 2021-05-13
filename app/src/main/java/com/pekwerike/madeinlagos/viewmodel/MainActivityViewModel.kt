@@ -15,8 +15,12 @@ class MainActivityViewModel @Inject constructor(
     private val mainRepositoryAPI: MainRepositoryAPI
 ) : ViewModel() {
 
+    private val _searchResult = MutableLiveData<List<Product>>()
+    val searchResult: LiveData<List<Product>>
+        get() = _searchResult
+
     val allProductsWithReviews: LiveData<List<Product>> =
-        mainRepositoryAPI.allProductsWithReviews.asLiveData()
+        mainRepositoryAPI.allProductsWithReviewsAsLiveData
 
     private val _networkResult = MutableLiveData<NetworkResult>(NetworkResult.NoInternetConnection)
     val networkResult: LiveData<NetworkResult>
@@ -28,6 +32,18 @@ class MainActivityViewModel @Inject constructor(
 
     init {
         refreshProductList()
+    }
+
+    fun filterProductList(text: String) {
+        viewModelScope.launch {
+            _searchResult.value = withContext(Dispatchers.Default) {
+                allProductsWithReviews.value?.filter {
+                    it.name.contains(text)
+                            || it.description.contains(text)
+                            || it.productImageUrl.contains(text)
+                }
+            }!!
+        }
     }
 
     fun refreshProductList() {

@@ -34,7 +34,6 @@ class ProductDetailFragment : Fragment() {
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 420
         }
-
         observeMainActivityViewModelLiveData()
     }
 

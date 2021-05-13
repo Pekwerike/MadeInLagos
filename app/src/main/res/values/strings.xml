@@ -6,4 +6,7 @@
     <string name="description_label">Description</string>
     <string name="shared_product_image_transition_name">sharedProductImageTransitionName</string>
     <string name="search_for_products_label">Search for products…</string>
+    <string name="no_internet_connection_label">Please check that you are connected to the internet</string>
+    <string name="no_results_found_label">Sorry, we don\'t have %s in stock at the moment</string>
+    <string name="server_downtime">Opps, our servers are down. We are working to fix them, please check back later</string>
 </resources>

@@ -28,6 +28,10 @@ interface ProductDAO {
     fun getAllProductWithReviews(): Flow<List<ProductWithReviews>>
 
     @Transaction
+    @Query("SELECT * FROM product_table")
+    fun getAllProductWithReviewsAsLiveData(): LiveData<List<ProductWithReviews>>
+
+    @Transaction
     @Query("SELECT * FROM product_table WHERE id = :productId")
     fun getProductWithReviewsByProductId(productId: String): Flow<ProductWithReviews>
 

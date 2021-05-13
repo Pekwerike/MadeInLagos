@@ -1,5 +1,7 @@
 package com.pekwerike.madeinlagos.repository.impl
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.map
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import com.pekwerike.madeinlagos.database.ProductWithReviews
 import com.pekwerike.madeinlagos.mappers.productReviewToProductReviewEntityList
@@ -19,14 +21,14 @@ class MadeInLagosProductRepository @Inject constructor(
     madeInLagosLocalDatabase: MadeInLagosLocalDatabase,
     private val networkProductService: ProductServiceAPI,
     private val networkProductReview: ProductReviewAPI,
-    private val productDataSource: ProductDataSource,
+    productDataSource: ProductDataSource,
 ) : MainRepositoryAPI {
     private val productDao = madeInLagosLocalDatabase.productDAO()
     private val productReviewDao = madeInLagosLocalDatabase.productReviewDAO()
     private val allImages = productDataSource.getProductImagesUrl()
 
-    override val allProductsWithReviews: Flow<List<Product>> =
-        madeInLagosLocalDatabase.productDAO().getAllProductWithReviews().map {
+    override val allProductsWithReviewsAsLiveData: LiveData<List<Product>> =
+        madeInLagosLocalDatabase.productDAO().getAllProductWithReviewsAsLiveData().map {
             it.map { productWithReviews: ProductWithReviews ->
                 Product(
                     id = productWithReviews.product.productId,
