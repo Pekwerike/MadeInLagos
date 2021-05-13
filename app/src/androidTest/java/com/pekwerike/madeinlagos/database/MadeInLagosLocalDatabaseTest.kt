@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.pekwerike.madeinlagos.mappers.*
 import com.pekwerike.madeinlagos.model.Product
-import com.pekwerike.madeinlagos.model.ProductRating
 import com.pekwerike.madeinlagos.model.ProductReview
 import com.pekwerike.madeinlagos.utils.ProductDataSource
 import com.squareup.moshi.Moshi
@@ -90,7 +89,7 @@ class MadeInLagosLocalDatabaseTest {
                 ProductReview(
                     productId = "FI444",
                     locale = "en-US",
-                    rating = ProductRating.FIVE.ratingValue,
+                    rating = ProductReview.ProductRating.FIVE.ratingValue,
                     text = "Yo, beautiful product, Thank you Adidas"
                 ).productReviewToProductReviewEntity()
             )
@@ -114,13 +113,13 @@ class MadeInLagosLocalDatabaseTest {
                     ProductReview(
                         productId = "FI444",
                         locale = "en-US",
-                        rating = ProductRating.FIVE.ratingValue,
+                        rating = ProductReview.ProductRating.FIVE.ratingValue,
                         text = "Yo, beautiful product, Thank you Adidas"
                     ).productReviewToProductReviewEntity(),
                     ProductReview(
                         productId = "FI444",
                         locale = "en-US",
-                        rating = ProductRating.FIVE.ratingValue,
+                        rating =  ProductReview.ProductRating.FIVE.ratingValue,
                         text = "Nice boots, Thank you Adidas"
                     ).productReviewToProductReviewEntity()
                 )
