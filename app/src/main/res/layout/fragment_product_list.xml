@@ -32,13 +32,14 @@
                     android:background="@android:color/transparent"
                     android:layout_height="40dp"
                     android:src="@drawable/search_icon"/>
-                <TextView
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:hint="@string/search_for_products_label"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/search_for_products_label"
-                    android:textStyle="italic"
-                    android:padding="@dimen/textview_standard_padding"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"/>
+                    android:lines="1"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"/>
+
             </androidx.appcompat.widget.LinearLayoutCompat>
         </com.google.android.material.card.MaterialCardView>
 
