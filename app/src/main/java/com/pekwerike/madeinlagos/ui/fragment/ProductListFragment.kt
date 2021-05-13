@@ -80,12 +80,20 @@ class ProductListFragment : Fragment() {
 
                 fragmentProductListSearchBar.apply {
                     addTextChangedListener {
-                        mainActivityViewModel.filterProductList(it.toString())
+                        if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
+                            == true
+                        ) {
+                            mainActivityViewModel.filterProductList(it.toString())
+                        }
                     }
                     setOnEditorActionListener { _, actionId, _ ->
                         return@setOnEditorActionListener when (actionId) {
                             EditorInfo.IME_ACTION_SEARCH -> {
-                                mainActivityViewModel.filterProductList(text.toString())
+                                if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
+                                    == true
+                                ) {
+                                    mainActivityViewModel.filterProductList(text.toString())
+                                }
                                 true
                             }
                             else -> false
@@ -152,7 +160,7 @@ class ProductListFragment : Fragment() {
                                 .alpha(0f)
                         }
                         is NetworkResult.NoInternetConnection -> {
-                            if(allProductsWithReviews.value?.isEmpty() == true) {
+                            if (allProductsWithReviews.value?.isEmpty() == true) {
                                 fragmentProductListBinding.fragmentProductListUserLabel.apply {
                                     animate().alpha(1f)
                                     text = getString(R.string.no_internet_connection_label)
