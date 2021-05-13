@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @InstallIn(SingletonComponent::class)
 @Module
-class AndroidComponentsDIModule {
+object AndroidComponentsDIModule {
 
     @Provides
     fun getInputManager(@ApplicationContext context: Context): InputMethodManager {

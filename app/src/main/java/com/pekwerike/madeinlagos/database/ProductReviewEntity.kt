@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.pekwerike.madeinlagos.model.ProductRating
+import com.pekwerike.madeinlagos.model.ProductReview
 
 @Entity(
     tableName = "product_review_table", foreignKeys = [ForeignKey(
@@ -20,6 +20,6 @@ data class ProductReviewEntity(
     @ColumnInfo(name = "product_id", index = true)
     val productId: String,
     val locale: String = "en-US",
-    val rating: Int = ProductRating.ZERO.ratingValue,
+    val rating: Int = ProductReview.ProductRating.ZERO.ratingValue,
     val text: String
 )

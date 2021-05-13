@@ -18,8 +18,8 @@ class ProductItemLayoutViewHolder(private val productItemLayoutBinding: ProductI
         productItemClickListener: ProductItemClickListener
     ) {
         productItemLayoutBinding.apply {
-            productName = product.name
-            productPrice = "${product.currency}${product.price}"
+            this.product = product
+
             Glide.with(productItemLayoutProductImageView)
                 .load(product.productImageUrl)
                 .into(productItemLayoutProductImageView)

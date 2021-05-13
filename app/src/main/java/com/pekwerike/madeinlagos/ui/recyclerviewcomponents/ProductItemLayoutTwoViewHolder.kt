@@ -15,8 +15,7 @@ class ProductItemLayoutTwoViewHolder(private val productItemLayoutTwoBinding: Pr
 
     fun bindProductData(product: Product, productItemClickListener: ProductItemClickListener) {
         productItemLayoutTwoBinding.apply {
-            productName = product.name
-            productPrice = "${product.currency}${product.price}"
+            this.product = product
 
             Glide.with(productItemLayoutTwoProductImageView)
                 .load(product.productImageUrl)

@@ -5,12 +5,8 @@
     <data>
 
         <variable
-            name="productName"
-            type="String" />
-
-        <variable
-            name="productPrice"
-            type="String" />
+            name="product"
+            type="com.pekwerike.madeinlagos.model.Product" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -39,7 +35,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:lines="1"
                 android:padding="@dimen/textview_standard_padding"
-                android:text="@{productName}"
+                android:text="@{product.name}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:textStyle="bold" />
 
@@ -49,7 +45,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:lines="1"
                 android:padding="@dimen/textview_standard_padding"
-                android:text="@{productPrice}"
+                android:text="@{product.productPriceWithCurrency}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

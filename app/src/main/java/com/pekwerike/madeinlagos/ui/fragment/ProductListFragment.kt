@@ -149,12 +149,14 @@ class ProductListFragment : Fragment() {
                     when (it) {
                         is NetworkResult.Success -> {
                             fragmentProductListBinding.fragmentProductListUserLabel.animate()
-                                .alpha(1f)
+                                .alpha(0f)
                         }
                         is NetworkResult.NoInternetConnection -> {
-                            fragmentProductListBinding.fragmentProductListUserLabel.apply {
-                                animate().alpha(1f)
-                                text = getString(R.string.no_internet_connection_label)
+                            if(allProductsWithReviews.value?.isEmpty() == true) {
+                                fragmentProductListBinding.fragmentProductListUserLabel.apply {
+                                    animate().alpha(1f)
+                                    text = getString(R.string.no_internet_connection_label)
+                                }
                             }
                         }
                         is NetworkResult.HttpError -> {

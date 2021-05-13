@@ -40,8 +40,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/fragment_product_detail_product_price_text_view"
-                setProductCurrency="@{product.currency}"
-                setProductPrice="@{product.price}"
+                android:text="@{product.productPriceWithCurrency}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin"

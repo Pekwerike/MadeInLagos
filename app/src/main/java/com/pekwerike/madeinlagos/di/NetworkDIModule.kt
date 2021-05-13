@@ -16,7 +16,7 @@ import io.ktor.client.features.json.*
 
 @InstallIn(SingletonComponent::class)
 @Module
-class NetworkDIModule {
+object NetworkDIModule {
 
     @Provides
     fun getMoshi(): Moshi {
