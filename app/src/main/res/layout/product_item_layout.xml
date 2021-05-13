@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
         app:cardCornerRadius="0dp"
-        app:cardElevation="4dp">
+        app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
                 android:id="@+id/product_item_layout_product_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:scaleType="fitCenter" />
+                android:scaleType="centerCrop" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_item_layout_product_name"

@@ -32,7 +32,7 @@ class ProductDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 500
+            duration = 420
         }
 
         observeMainActivityViewModelLiveData()
