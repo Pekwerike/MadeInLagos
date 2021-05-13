@@ -24,8 +24,10 @@ class ProductItemLayoutViewHolder(private val productItemLayoutBinding: ProductI
                 .load(product.productImageUrl)
                 .into(productItemLayoutProductImageView)
 
+            productItemLayoutCardView.transitionName = product.id
+
             productItemLayoutCardView.setOnClickListener {
-                productItemClickListener.onClick(product)
+                productItemClickListener.onClick(product, productItemLayoutCardView)
             }
             executePendingBindings()
         }

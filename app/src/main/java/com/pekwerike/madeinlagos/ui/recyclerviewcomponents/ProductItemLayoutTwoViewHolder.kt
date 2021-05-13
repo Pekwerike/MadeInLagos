@@ -22,8 +22,10 @@ class ProductItemLayoutTwoViewHolder(private val productItemLayoutTwoBinding: Pr
                 .load(product.productImageUrl)
                 .into(productItemLayoutTwoProductImageView)
 
-            productItemLayoutTwoCardView.setOnClickListener {
+            productItemLayoutTwoCardView.transitionName = product.id
 
+            productItemLayoutTwoCardView.setOnClickListener {
+                productItemClickListener.onClick(product, productItemLayoutTwoCardView)
             }
         }
     }

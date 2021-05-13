@@ -30,7 +30,7 @@
                 android:id="@+id/product_item_layout_product_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="fitCenter" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/product_item_layout_product_name"

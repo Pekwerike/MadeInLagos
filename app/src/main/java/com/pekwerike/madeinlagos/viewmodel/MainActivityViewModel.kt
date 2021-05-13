@@ -14,6 +14,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     private val mainRepositoryAPI: MainRepositoryAPI
 ) : ViewModel() {
+
     val allProductsWithReviews: LiveData<List<Product>> =
         mainRepositoryAPI.allProductsWithReviews.asLiveData()
 

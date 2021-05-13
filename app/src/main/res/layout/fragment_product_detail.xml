@@ -4,20 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="product"
             type="com.pekwerike.madeinlagos.model.Product" />
     </data>
 
     <ScrollView
+        android:id="@+id/fragment_product_detail_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background_color"
+        tools:context=".ui.fragment.ProductDetailFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:context=".ui.fragment.ProductDetailFragment">
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/fragment_product_detail_product_image_view"
@@ -31,19 +34,19 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin"
                 android:lines="1"
-                android:text="@{product.name}"
                 android:padding="@dimen/textview_standard_padding"
+                android:text="@{product.name}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textStyle="bold" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/fragment_product_detail_product_price_text_view"
+                setProductCurrency="@{product.currency}"
+                setProductPrice="@{product.price}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin"
                 android:lines="1"
-                setProductPrice="@{product.price}"
-                setProductCurrency="@{product.currency}"
                 android:padding="@dimen/textview_standard_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
@@ -51,7 +54,10 @@
                 android:id="@+id/fragment_product_detail_product_description_header_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/standard_margin"
+                android:layout_marginVertical="8dp"
+                android:background="@android:color/darker_gray"
+                android:alpha="0.7"
+                android:layout_marginHorizontal="@dimen/standard_margin"
                 android:padding="@dimen/textview_standard_padding"
                 android:text="@string/description_label"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
@@ -60,9 +66,10 @@
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/fragment_product_detail_product_description"
                 android:layout_width="match_parent"
+                android:padding="@dimen/textview_standard_padding"
                 android:layout_height="wrap_content"
-                android:text="@{product.description}"
                 android:layout_marginHorizontal="@dimen/standard_margin"
+                android:text="@{product.description}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
             <androidx.recyclerview.widget.RecyclerView
