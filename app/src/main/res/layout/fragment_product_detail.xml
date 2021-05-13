@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="product"
+            type="com.pekwerike.madeinlagos.model.Product" />
     </data>
 
     <ScrollView
@@ -29,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin"
                 android:lines="1"
+                android:text="@{product.name}"
                 android:padding="@dimen/textview_standard_padding"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textStyle="bold" />
@@ -39,6 +42,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/standard_margin"
                 android:lines="1"
+                setProductPrice="@{product.price}"
+                setProductCurrency="@{product.currency}"
                 android:padding="@dimen/textview_standard_padding"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
@@ -56,6 +61,7 @@
                 android:id="@+id/fragment_product_detail_product_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{product.description}"
                 android:layout_marginHorizontal="@dimen/standard_margin"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 

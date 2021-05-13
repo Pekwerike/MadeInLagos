@@ -25,8 +25,9 @@ class ProductDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentProductDetailBinding = FragmentProductDetailBinding.inflate(
+        fragmentProductDetailBinding = DataBindingUtil.inflate<FragmentProductDetailBinding>(
             inflater,
+            R.layout.fragment_product_detail,
             container,
             false
         ).apply {
