@@ -1,14 +1,9 @@
 <resources>
     <string name="app_name">MadeInLagos</string>
-    <string name="all_products_http_response">
-        [{"currency":"$","price":69,"id":"FI444","name":"product","description":"description"},{"currency":"$","price":10,"id":"HI333","name":"product","description":"description"},{"currency":"$","price":100,"id":"HI334","name":"product","description":"description"},{"currency":"$","price":37,"id":"HI336","name":"product","description":"description"},{"currency":"$","price":78,"id":"HI337","name":"product","description":"description"},{"currency":"$","price":22,"id":"HI338","name":"product","description":"description"},{"currency":"$","price":62,"id":"HI339","name":"product","description":"description"},{"currency":"$","price":68,"id":"HI340","name":"product","description":"description"},{"currency":"$","price":11,"id":"HI341","name":"product","description":"description"},{"currency":"$","price":8,"id":"HI342","name":"product","description":"description"},{"currency":"$","price":19,"id":"HI343","name":"product","description":"description"}]
-    </string>
-    <string name="single_product_http_response">
-        {"currency":"$","price":69,"id":"FI444","name":"product","description":"description"}
-    </string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description_label">Description</string>
     <string name="shared_product_image_transition_name">sharedProductImageTransitionName</string>
-    <string name="search_for_products_label">Search for products...</string>
+    <string name="search_for_products_label">Search for products…</string>
 </resources>

@@ -37,6 +37,10 @@
                     android:hint="@string/search_for_products_label"
                     android:layout_width="match_parent"
                     android:lines="1"
+                    android:maxLines="1"
+                    android:inputType="textFilter"
+                    android:imeOptions="actionSearch"
+                    android:padding="@dimen/textview_standard_padding"
                     android:background="@android:color/transparent"
                     android:layout_height="wrap_content"/>
 
