@@ -66,8 +66,6 @@ class ProductListFragment : Fragment() {
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        observeMainActivityViewModelLiveData()
     }
 
     override fun onCreateView(
@@ -144,6 +142,10 @@ class ProductListFragment : Fragment() {
         return fragmentProductListBinding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        observeMainActivityViewModelLiveData()
+    }
     private fun observeMainActivityViewModelLiveData() {
         mainActivityViewModel.apply {
             allProductsWithReviews.observe(this@ProductListFragment) {

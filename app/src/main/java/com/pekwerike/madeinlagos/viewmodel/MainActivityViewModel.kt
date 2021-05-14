@@ -6,6 +6,7 @@ import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -47,10 +48,11 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun refreshProductList() {
-        viewModelScope.launch {
-            _networkResult.value = withContext(Dispatchers.IO) {
-                mainRepositoryAPI.refreshProductList()
-            }!!
+        viewModelScope.launch(Dispatchers.IO) {
+            val networkResult = mainRepositoryAPI.refreshProductList()
+            withContext(Dispatchers.Main) {
+                _networkResult.value = networkResult
+            }
         }
     }
 

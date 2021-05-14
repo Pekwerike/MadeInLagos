@@ -8,7 +8,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     companion object {
         var isKeyBoardOpen: Boolean = false
@@ -16,7 +15,6 @@ class MainActivity : AppCompatActivity() {
         fun newKeyBoardState(isKeyBoardOpened : Boolean){
             isKeyBoardOpen = isKeyBoardOpened
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
