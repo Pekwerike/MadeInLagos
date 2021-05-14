@@ -11,7 +11,7 @@
             type="com.pekwerike.madeinlagos.model.Product" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_product_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,12 +24,19 @@
             android:id="@+id/fragment_product_details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
             app:title="Details" />
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fragment_product_details_toolbar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,10 +89,15 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="28dp"
             android:contentDescription="@string/write_product_review_label"
             android:src="@drawable/ic_baseline_edit_24"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end" />
+            app:tint="@color/on_background_color"
+            app:backgroundTint="@color/half_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

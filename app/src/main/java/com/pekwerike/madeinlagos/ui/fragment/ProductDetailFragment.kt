@@ -1,5 +1,7 @@
 package com.pekwerike.madeinlagos.ui.fragment
 
+import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -68,8 +70,17 @@ class ProductDetailFragment : Fragment() {
         mainActivityViewModel.selectedProduct.observe(this) {
             it?.let { selectedProduct: Product ->
                 fragmentProductDetailBinding.apply {
+                    val placeHolder = ColorDrawable(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                android.R.color.darker_gray
+                            )
+                        ).apply {
+
+                        }
                     Glide.with(fragmentProductDetailProductImageView)
                         .load(selectedProduct.productImageUrl)
+                        .placeholder(placeHolder)
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
                                 e: GlideException?,

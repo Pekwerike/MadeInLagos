@@ -30,7 +30,6 @@ import javax.inject.Inject
 class ProductListFragment : Fragment() {
 
     private var isKeyBoardOpen = false
-    private var isSearchActive = false
 
     @Inject
     lateinit var inputMethodManager: InputMethodManager
@@ -67,18 +66,22 @@ class ProductListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         MainActivity.onBackPressedImpl = object : OnBackPressed {
             override fun backPressed(): Boolean {
-                return if (mainActivityViewModel.selectedProduct.value != null) {
-                    mainActivityViewModel.unselectProduct()
-                    true
-                } else if (mainActivityViewModel.isSearchActive) {
-                    mainActivityViewModel.stopSearch()
-                    fragmentProductListBinding.fragmentProductListSearchBar.apply {
-                        clearFocus()
-                        setText("")
+                return when {
+                    mainActivityViewModel.selectedProduct.value != null -> {
+                        mainActivityViewModel.unselectProduct()
+                        true
                     }
-                    false
-                } else {
-                    true
+                    mainActivityViewModel.isSearchActive -> {
+                        mainActivityViewModel.stopSearch()
+                        fragmentProductListBinding.fragmentProductListSearchBar.apply {
+                            clearFocus()
+                            setText("")
+                        }
+                        false
+                    }
+                    else -> {
+                        true
+                    }
                 }
             }
         }
@@ -161,7 +164,6 @@ class ProductListFragment : Fragment() {
     }
 
     fun hideKeyBoard() {
-        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
         fragmentProductListBinding.fragmentProductListSearchBar.clearFocus()
         newKeyBoardState(false)
