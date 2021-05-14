@@ -39,7 +39,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun filterProductList(text: String) {
         viewModelScope.launch {
-            if (text.isNotEmpty()) isSearchActive = true
+            isSearchActive = text.isNotEmpty()
             _searchResult.value = withContext(Dispatchers.Default) {
                 allProductsWithReviews.value?.filter {
                     it.name.contains(text)
