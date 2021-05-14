@@ -16,8 +16,10 @@ class MainActivityViewModel @Inject constructor(
     private val mainRepositoryAPI: MainRepositoryAPI
 ) : ViewModel() {
 
-    private val _searchResult = MutableLiveData<List<Product>>()
-    val searchResult: LiveData<List<Product>>
+    var isSearchActive: Boolean = false
+
+    private val _searchResult = MutableLiveData<List<Product>?>(null)
+    val searchResult: LiveData<List<Product>?>
         get() = _searchResult
 
     val allProductsWithReviews: LiveData<List<Product>> =
@@ -27,8 +29,8 @@ class MainActivityViewModel @Inject constructor(
     val networkResult: LiveData<NetworkResult>
         get() = _networkResult
 
-    private val _selectedProduct = MutableLiveData<Product>()
-    val selectedProduct: LiveData<Product>
+    private val _selectedProduct = MutableLiveData<Product?>()
+    val selectedProduct: LiveData<Product?>
         get() = _selectedProduct
 
     init {
@@ -37,6 +39,7 @@ class MainActivityViewModel @Inject constructor(
 
     fun filterProductList(text: String) {
         viewModelScope.launch {
+            if (text.isNotEmpty()) isSearchActive = true
             _searchResult.value = withContext(Dispatchers.Default) {
                 allProductsWithReviews.value?.filter {
                     it.name.contains(text)
@@ -47,6 +50,11 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun stopSearch() {
+        isSearchActive = false
+        _searchResult.value = null
+    }
+
     fun refreshProductList() {
         viewModelScope.launch(Dispatchers.IO) {
             val networkResult = mainRepositoryAPI.refreshProductList()
@@ -54,6 +62,10 @@ class MainActivityViewModel @Inject constructor(
                 _networkResult.value = networkResult
             }
         }
+    }
+
+    fun unselectProduct() {
+        _selectedProduct.value = null
     }
 
     fun selectProduct(product: Product) {

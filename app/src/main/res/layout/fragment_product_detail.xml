@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -10,59 +11,81 @@
             type="com.pekwerike.madeinlagos.model.Product" />
     </data>
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/fragment_product_detail_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background_color"
+        android:contentDescription="@string/arrow_back"
+        android:orientation="vertical"
         tools:context=".ui.fragment.ProductDetailFragment">
 
-        <LinearLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/fragment_product_details_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+            app:title="Details" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/fragment_product_detail_product_image_view"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/standard_margin" />
+                android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/fragment_product_detail_product_name_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/standard_margin"
-                android:lines="1"
-                android:padding="@dimen/textview_standard_padding"
-                android:text="@{product.name}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/fragment_product_detail_product_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/standard_margin" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/fragment_product_detail_product_price_text_view"
-                android:text="@{product.productPriceWithCurrency}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/standard_margin"
-                android:lines="1"
-                android:padding="@dimen/textview_standard_padding"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fragment_product_detail_product_name_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standard_margin"
+                    android:lines="1"
+                    android:padding="@dimen/textview_standard_padding"
+                    android:text="@{product.name}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/fragment_product_detail_product_description"
-                android:layout_width="match_parent"
-                android:padding="@dimen/textview_standard_padding"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="4dp"
-                android:layout_marginHorizontal="@dimen/standard_margin"
-                android:text="@{product.description}"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fragment_product_detail_product_price_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standard_margin"
+                    android:lines="1"
+                    android:padding="@dimen/textview_standard_padding"
+                    android:text="@{product.productPriceWithCurrency}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_product_detail_product_reviews_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/fragment_product_detail_product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/standard_margin"
+                    android:layout_marginVertical="4dp"
+                    android:padding="@dimen/textview_standard_padding"
+                    android:text="@{product.description}"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-        </LinearLayout>
-    </ScrollView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_product_detail_product_reviews_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/write_product_review_label"
+            android:src="@drawable/ic_baseline_edit_24"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end" />
+
+    </LinearLayout>
 </layout>

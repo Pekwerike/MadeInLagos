@@ -26,6 +26,7 @@ class ProductItemLayoutTwoViewHolder(private val productItemLayoutTwoBinding: Pr
             productItemLayoutTwoCardView.setOnClickListener {
                 productItemClickListener.onClick(product, productItemLayoutTwoCardView)
             }
+            executePendingBindings()
         }
     }
 

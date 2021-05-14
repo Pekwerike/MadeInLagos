@@ -1,6 +1,5 @@
 package com.pekwerike.madeinlagos.ui.fragment
 
-import android.app.SharedElementCallback
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,18 +8,15 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.view.doOnPreDraw
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import androidx.transition.TransitionInflater
-import com.google.android.material.transition.MaterialContainerTransform
 import com.pekwerike.madeinlagos.MainActivity
+import com.pekwerike.madeinlagos.OnBackPressed
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductListBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
@@ -32,6 +28,9 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProductListFragment : Fragment() {
+
+    private var isKeyBoardOpen = false
+    private var isSearchActive = false
 
     @Inject
     lateinit var inputMethodManager: InputMethodManager
@@ -66,6 +65,23 @@ class ProductListFragment : Fragment() {
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MainActivity.onBackPressedImpl = object : OnBackPressed {
+            override fun backPressed(): Boolean {
+                return if (mainActivityViewModel.selectedProduct.value != null) {
+                    mainActivityViewModel.unselectProduct()
+                    true
+                } else if (mainActivityViewModel.isSearchActive) {
+                    mainActivityViewModel.stopSearch()
+                    fragmentProductListBinding.fragmentProductListSearchBar.apply {
+                        clearFocus()
+                        setText("")
+                    }
+                    false
+                } else {
+                    true
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -99,7 +115,7 @@ class ProductListFragment : Fragment() {
                     }
                     setOnFocusChangeListener { _, hasFocus ->
                         if (hasFocus) {
-                            MainActivity.newKeyBoardState(true)
+                            newKeyBoardState(true)
                         }
                     }
                 }
@@ -126,10 +142,8 @@ class ProductListFragment : Fragment() {
                             recyclerView: RecyclerView,
                             newState: Int
                         ) {
-                            if (MainActivity.isKeyBoardOpen) {
-                                inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
-                                fragmentProductListBinding.fragmentProductListSearchBar.clearFocus()
-                                MainActivity.newKeyBoardState(isKeyBoardOpened = false)
+                            if (isKeyBoardOpen) {
+                                hideKeyBoard()
                             }
                         }
                     })
@@ -142,10 +156,22 @@ class ProductListFragment : Fragment() {
         return fragmentProductListBinding.root
     }
 
+    private fun newKeyBoardState(isKeyBoardOpen: Boolean) {
+        this.isKeyBoardOpen = isKeyBoardOpen
+    }
+
+    fun hideKeyBoard() {
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS)
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+        fragmentProductListBinding.fragmentProductListSearchBar.clearFocus()
+        newKeyBoardState(false)
+    }
+
     override fun onStart() {
         super.onStart()
         observeMainActivityViewModelLiveData()
     }
+
     private fun observeMainActivityViewModelLiveData() {
         mainActivityViewModel.apply {
             allProductsWithReviews.observe(this@ProductListFragment) {
@@ -179,12 +205,11 @@ class ProductListFragment : Fragment() {
                 }
             }
 
-            selectedProduct.observe(this@ProductListFragment) {
-                it?.let {
-
-                }
-            }
             searchResult.observe(this@ProductListFragment) {
+                productListRecyclerViewAdapter.submitList(
+                    it ?: mainActivityViewModel.allProductsWithReviews.value
+                )
+
                 it?.let {
                     productListRecyclerViewAdapter.submitList(it)
                     if (it.isEmpty()) {

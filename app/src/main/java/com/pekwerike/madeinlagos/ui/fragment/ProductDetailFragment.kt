@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
@@ -31,6 +32,7 @@ class ProductDetailFragment : Fragment() {
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             duration = 420
         }
@@ -49,11 +51,14 @@ class ProductDetailFragment : Fragment() {
             container,
             false
         ).apply {
-
             ViewCompat.setTransitionName(
                 fragmentProductDetailContainer,
                 args.productId
             )
+
+            fragmentProductDetailsToolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
         // Inflate the layout for this fragment
         return fragmentProductDetailBinding.root

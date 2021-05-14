@@ -2,19 +2,20 @@ package com.pekwerike.madeinlagos
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
+interface OnBackPressed {
+    fun backPressed(): Boolean
+}
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        var isKeyBoardOpen: Boolean = false
-
-        fun newKeyBoardState(isKeyBoardOpened : Boolean){
-            isKeyBoardOpen = isKeyBoardOpened
-        }
+        var onBackPressedImpl: OnBackPressed? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +25,13 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        newKeyBoardState(false)
+        if (onBackPressedImpl != null) {
+            val closeApp = onBackPressedImpl!!.backPressed()
+            if (closeApp) {
+                super.onBackPressed()
+            }
+        } else {
+            super.onBackPressed()
+        }
     }
 }

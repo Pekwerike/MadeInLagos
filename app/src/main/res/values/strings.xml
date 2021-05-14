@@ -9,4 +9,6 @@
     <string name="no_internet_connection_label">Please check that you are connected to the internet</string>
     <string name="no_results_found_label">Sorry, we don\'t have %s in stock at the moment</string>
     <string name="server_downtime">Opps, our servers are down. We are working to fix them, please check back later</string>
+    <string name="arrow_back">Arrow back</string>
+    <string name="write_product_review_label">write review about this product</string>
 </resources>
