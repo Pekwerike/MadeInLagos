@@ -99,18 +99,18 @@ class MadeInLagosProductRepository @Inject constructor(
         // return the list of products and network state to the user
         return when (val networkResult = networkProductService.getAllProduct()) {
             is NetworkResult.Success.AllProducts -> {
-                productDao.refreshProductList(networkResult.products.toProductEntityList())
-                val productList = productDao.getAllProductsWithReviews().map { productWithReviews: ProductWithReviews ->
-                        Product(
-                            id = productWithReviews.product.productId,
-                            name = productWithReviews.product.name,
-                            description = productWithReviews.product.description,
-                            currency = productWithReviews.product.currency,
-                            price = productWithReviews.product.price,
-                            productImageUrl = allImages.random(),
-                            productReviews = productWithReviews.reviews.toProductReviewList()
-                        )
-                }
+                productDao.refreshProductList(networkResult.products.map{
+                    Product(
+                        id = it.id,
+                        name = it.name,
+                        description = it.description,
+                        currency = it.currency,
+                        price = it.price,
+                        productImageUrl = allImages.random(),
+                        productReviews = it.productReviews
+                    )
+                }.toProductEntityList())
+                val productList = productDao.getAllProductsWithReviews().productWithReviewsToProductList()
                 ProductsAndNetworkState(
                     productList,
                     networkResult

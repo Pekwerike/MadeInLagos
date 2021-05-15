@@ -17,7 +17,8 @@ fun List<ProductEntity>.toProductList(): List<Product> = map { productEntity: Pr
         name = productEntity.name,
         description = productEntity.description,
         currency = productEntity.currency,
-        price = productEntity.price
+        price = productEntity.price,
+        productImageUrl = productEntity.productImageUrl
     )
 }
 
@@ -28,7 +29,8 @@ fun List<Product>.toProductEntityList(): List<ProductEntity> = map { product: Pr
         name = product.name,
         description = product.description,
         currency = product.currency,
-        price = product.price
+        price = product.price,
+        productImageUrl = product.productImageUrl
     )
 }
 
@@ -40,7 +42,7 @@ fun List<ProductWithReviews>.productWithReviewsToProductList(): List<Product> =
             description = productWithReviews.product.description,
             currency = productWithReviews.product.currency,
             price = productWithReviews.product.price,
-            productImageUrl = "",
+            productImageUrl = productWithReviews.product.productImageUrl,
             productReviews = productWithReviews.reviews.toProductReviewList()
         )
     }
@@ -71,6 +73,7 @@ fun ProductWithReviews.productWithReviewsToProduct(): Product =
         description = product.description,
         currency = product.currency,
         price = product.price,
+        productImageUrl = product.productImageUrl,
         productReviews = reviews.toProductReviewList()
     )
 
@@ -79,7 +82,8 @@ fun ProductEntity.toProduct(): Product = Product(
     name = name,
     description = description,
     currency = currency,
-    price = price
+    price = price,
+    productImageUrl = productImageUrl
 )
 
 fun ProductReview.productReviewToProductReviewEntity(): ProductReviewEntity =
@@ -94,6 +98,7 @@ fun Product.toProductEntity(): ProductEntity = ProductEntity(
     name = name,
     description = description,
     currency = currency,
-    price = price
+    price = price,
+    productImageUrl = productImageUrl
 )
 
