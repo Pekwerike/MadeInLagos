@@ -6,7 +6,6 @@ import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

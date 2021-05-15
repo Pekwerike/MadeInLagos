@@ -100,7 +100,17 @@ class MadeInLagosProductRepository @Inject constructor(
         return when (val networkResult = networkProductService.getAllProduct()) {
             is NetworkResult.Success.AllProducts -> {
                 productDao.refreshProductList(networkResult.products.toProductEntityList())
-                val productList = productDao.getAllProductsWithReviews().productWithReviewsToProductList()
+                val productList = productDao.getAllProductsWithReviews().map { productWithReviews: ProductWithReviews ->
+                        Product(
+                            id = productWithReviews.product.productId,
+                            name = productWithReviews.product.name,
+                            description = productWithReviews.product.description,
+                            currency = productWithReviews.product.currency,
+                            price = productWithReviews.product.price,
+                            productImageUrl = allImages.random(),
+                            productReviews = productWithReviews.reviews.toProductReviewList()
+                        )
+                }
                 ProductsAndNetworkState(
                     productList,
                     networkResult
