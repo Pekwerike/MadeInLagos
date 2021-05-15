@@ -87,7 +87,7 @@
         </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/product_detail_post_product_review"
+            android:id="@+id/product_detail_post_product_review_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:transitionName="@string/post_product_review_transition_element"

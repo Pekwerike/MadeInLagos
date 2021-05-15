@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:transitionName="@string/post_product_review_transition_element"
-    tools:context=".ui.fragment.ProductReviewFragment">
+    tools:context=".ui.productreview.ProductReviewActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/product_review_toolbar"

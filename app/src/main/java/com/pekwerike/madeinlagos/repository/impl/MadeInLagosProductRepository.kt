@@ -67,14 +67,14 @@ class MadeInLagosProductRepository @Inject constructor(
 
     override suspend fun postProductReview(
         productId: String,
-        userRating: Float,
+        userRating: Int,
         userReviewText: String
     ): NetworkResult {
         return try {
             networkProductReview.postProductReview(
                 ProductReview(
                     productId = productId,
-                    rating = userRating.roundToInt(),
+                    rating = userRating,
                     text = userReviewText
                 )
             )

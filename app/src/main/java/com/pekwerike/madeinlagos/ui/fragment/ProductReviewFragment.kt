@@ -29,7 +29,7 @@ class ProductReviewFragment : Fragment() {
             inflater,
             container, false
         )
-        fragmentProductReviewBinding.fragmentProductReviewToolbar.setOnMenuItemClickListener {
+        fragmentProductReviewBinding.productReviewToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.post_review_menu_item) {
                 // get the rating value
                 val userRating = fragmentProductReviewBinding.productReviewRatingBar.rating
