@@ -16,5 +16,5 @@ abstract class ProductAPIsDIModule {
     abstract fun getProductServiceAPIImplementation(productService: ProductServiceRetrofitImpl) : ProductServiceAPI
 
     @Binds
-    abstract fun getProductReviewAPIImplementation(productReviewImpl: ProductReviewImpl): ProductReviewAPI
+    abstract fun getProductReviewAPIImplementation(productReviewImpl: ProductServiceRetrofitImpl): ProductReviewAPI
 }

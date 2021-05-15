@@ -15,4 +15,5 @@ interface ProductServiceAPI {
     suspend fun getProductById(productId: String): NetworkResult
     suspend fun updateProduct(productId: String, product: Product): NetworkResult
     suspend fun deleteProduct(productId: String): NetworkResult
+
 }
