@@ -84,7 +84,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             mainRepositoryAPI.postProductReview(
                 productId = productId,
-                userRating = userRating,
+                userRating = userRating.toInt(),
                 userReviewText = userReviewText
             )
         }

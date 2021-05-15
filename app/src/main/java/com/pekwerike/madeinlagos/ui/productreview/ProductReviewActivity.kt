@@ -35,17 +35,22 @@ class ProductReviewActivity : AppCompatActivity() {
 
     private fun configureLayout() {
         activityProductReviewBinding.apply {
-            productReviewToolbar.setOnMenuItemClickListener {
-                if (it.itemId == R.id.post_review_menu_item) {
-                    val userRating = productReviewRatingBar.rating
-                    val userReview = productReviewEditText.text.toString()
-                    productReviewViewModel.postProductReview(
-                        productId,
-                        userRating.toInt(),
-                        userReview
-                    )
-                    true
-                } else false
+            productReviewToolbar.apply {
+                setOnMenuItemClickListener {
+                    if (it.itemId == R.id.post_review_menu_item) {
+                        val userRating = productReviewRatingBar.rating
+                        val userReview = productReviewEditText.text.toString()
+                        productReviewViewModel.postProductReview(
+                            productId,
+                            userRating.toInt(),
+                            userReview
+                        )
+                        true
+                    } else false
+                }
+                setNavigationOnClickListener {
+                    finish()
+                }
             }
         }
     }
