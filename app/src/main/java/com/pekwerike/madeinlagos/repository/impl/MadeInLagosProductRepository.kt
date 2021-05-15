@@ -9,6 +9,7 @@ import com.pekwerike.madeinlagos.mappers.toProductEntityList
 import com.pekwerike.madeinlagos.mappers.toProductReviewList
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
+import com.pekwerike.madeinlagos.model.ProductReview
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
@@ -17,6 +18,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.net.UnknownHostException
+import kotlin.math.roundToInt
 
 class MadeInLagosProductRepository @Inject constructor(
     madeInLagosLocalDatabase: MadeInLagosLocalDatabase,
@@ -67,11 +69,20 @@ class MadeInLagosProductRepository @Inject constructor(
     }
 
     override suspend fun postProductReview(
+        productId: String,
         userRating: Float,
         userReviewText: String
     ): NetworkResult {
         return try {
-
+            networkProductReview.postProductReview(
+                ProductReview(
+                    productId = productId,
+                    rating = userRating.roundToInt(),
+                    text = userReviewText
+                )
+            )
+            // get all reviews for the product
+            getProductReviewsByProductId(productId)
         } catch (unknownHostException: UnknownHostException) {
             NetworkResult.NoInternetConnection
         } catch (exception: Exception) {

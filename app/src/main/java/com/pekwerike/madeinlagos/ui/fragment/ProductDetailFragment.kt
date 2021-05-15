@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
@@ -65,6 +66,14 @@ class ProductDetailFragment : Fragment() {
 
             fragmentProductDetailsToolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
+            }
+            fragmentProductDetailPostProductReview.setOnClickListener {
+
+                findNavController().navigate(
+                    ProductDetailFragmentDirections
+                        .actionProductDetailFragment2ToProductReviewFragment2(),
+                    FragmentNavigatorExtras(it to getString(R.string.post_product_review_transition_element))
+                )
             }
         }
     }

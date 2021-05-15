@@ -5,13 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductReviewBinding
+import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
 
 
 class ProductReviewFragment : Fragment() {
 
     private lateinit var fragmentProductReviewBinding: FragmentProductReviewBinding
+    private val sharedViewModel: MainActivityViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,12 +26,12 @@ class ProductReviewFragment : Fragment() {
         fragmentProductReviewBinding.fragmentProductReviewToolbar.setOnMenuItemClickListener {
             if (it.itemId == R.id.post_review_menu_item) {
                 // get the rating value
-                val rating = fragmentProductReviewBinding.productReviewRatingBar.rating
+                val userRating = fragmentProductReviewBinding.productReviewRatingBar.rating
                 // get the text
-                val productReviewText =
+                val userReviewText =
                     fragmentProductReviewBinding.productReviewEditText.text.toString()
                 // post the rating and the text to the server
-
+                sharedViewModel.postProductReview(userRating, userReviewText)
                 true
             } else false
         }
