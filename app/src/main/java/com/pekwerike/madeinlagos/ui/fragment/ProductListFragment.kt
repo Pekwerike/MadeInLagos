@@ -45,7 +45,7 @@ class ProductListFragment : Fragment() {
 
                 findNavController()
                     .navigate(
-                        ProductListFragmentDirections.actionProductListFragment2ToProductDetailFragment2(),
+                        ProductListFragmentDirections.actionProductListFragment2ToProductDetailFragment2(product.id),
                         navigationExtras
                     )
             } else {
