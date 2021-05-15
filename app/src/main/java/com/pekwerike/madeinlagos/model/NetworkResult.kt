@@ -1,7 +1,5 @@
 package com.pekwerike.madeinlagos.model
 
-import io.ktor.http.*
-
 sealed class NetworkResult {
     sealed class Success : NetworkResult() {
         data class AllProducts(val products: List<Product>) : Success()
@@ -12,6 +10,6 @@ sealed class NetworkResult {
         object NoResponse : Success()
     }
 
-    data class HttpError(val httpErrorStatusCode: HttpStatusCode) : NetworkResult()
+    data class HttpError(val httpErrorStatusCode: Int) : NetworkResult()
     object NoInternetConnection : NetworkResult()
 }
