@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
@@ -27,6 +28,9 @@ import com.pekwerike.madeinlagos.databinding.FragmentProductDetailBinding
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductDetailFragment : Fragment() {
@@ -47,17 +51,13 @@ class ProductDetailFragment : Fragment() {
             duration = 420
         }
         postponeEnterTransition()
+
         fragmentProductDetailBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_product_detail,
             container,
             false
         )
-        // Inflate the layout for this fragment
-        return fragmentProductDetailBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         fragmentProductDetailBinding.apply {
             ViewCompat.setTransitionName(
                 fragmentProductDetailContainer,
@@ -71,46 +71,55 @@ class ProductDetailFragment : Fragment() {
 
                 findNavController().navigate(
                     ProductDetailFragmentDirections
-                        .actionProductDetailFragment2ToProductReviewFragment2(),
+                        .actionProductDetailFragment2ToProductReviewFragment2(args.productId),
                     FragmentNavigatorExtras(it to getString(R.string.post_product_review_transition_element))
                 )
             }
         }
+        // Inflate the layout for this fragment
+        return fragmentProductDetailBinding.root
     }
 
     private fun observeMainActivityViewModelLiveData() {
+        mainActivityViewModel.allProductsWithReviews.observe(this) {
+            Toast.makeText(requireContext(), it[0].productReviews.size.toString(), Toast.LENGTH_SHORT).show()
+        }
+
         mainActivityViewModel.selectedProduct.observe(this) {
             it?.let { selectedProduct: Product ->
+                mainActivityViewModel.getProductReview()
                 fragmentProductDetailBinding.apply {
 
-                    Glide.with(fragmentProductDetailProductImageView)
-                        .load(selectedProduct.productImageUrl)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        Glide.with(fragmentProductDetailProductImageView)
+                            .load(selectedProduct.productImageUrl)
 
-                        .listener(object : RequestListener<Drawable> {
-                            override fun onLoadFailed(
-                                e: GlideException?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                startPostponedEnterTransition()
-                                return false
-                            }
+                            .listener(object : RequestListener<Drawable> {
+                                override fun onLoadFailed(
+                                    e: GlideException?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    startPostponedEnterTransition()
+                                    return false
+                                }
 
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any?,
-                                target: Target<Drawable>?,
-                                dataSource: DataSource?,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                startPostponedEnterTransition()
-                                return false
-                            }
-                        })
-                        .into(fragmentProductDetailProductImageView)
+                                override fun onResourceReady(
+                                    resource: Drawable?,
+                                    model: Any?,
+                                    target: Target<Drawable>?,
+                                    dataSource: DataSource?,
+                                    isFirstResource: Boolean
+                                ): Boolean {
+                                    startPostponedEnterTransition()
+                                    return false
+                                }
+                            })
+                            .into(fragmentProductDetailProductImageView)
 
-                    product = selectedProduct
+                        product = selectedProduct
+                    }
                 }
             }
         }

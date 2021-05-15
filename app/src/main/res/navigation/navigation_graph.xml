@@ -31,5 +31,9 @@
         android:id="@+id/productReviewFragment2"
         android:name="com.pekwerike.madeinlagos.ui.fragment.ProductReviewFragment"
         android:label="fragment_product_review"
-        tools:layout="@layout/fragment_product_review" />
+        tools:layout="@layout/fragment_product_review" >
+        <argument
+            android:name="product_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

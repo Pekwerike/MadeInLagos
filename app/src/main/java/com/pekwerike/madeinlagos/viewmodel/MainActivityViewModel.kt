@@ -72,15 +72,21 @@ class MainActivityViewModel @Inject constructor(
         _selectedProduct.value = product
     }
 
-    fun postProductReview(userRating: Float, userReviewText: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+    fun getProductReview() {
+        viewModelScope.launch {
             _selectedProduct.value?.let {
-                mainRepositoryAPI.postProductReview(
-                    productId = it.id,
-                    userRating = userRating,
-                    userReviewText = userReviewText
-                )
+                mainRepositoryAPI.getProductReviewsByProductId(it.id)
             }
+        }
+    }
+
+    fun postProductReview(productId: String, userRating: Float, userReviewText: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mainRepositoryAPI.postProductReview(
+                productId = productId,
+                userRating = userRating,
+                userReviewText = userReviewText
+            )
         }
     }
 }

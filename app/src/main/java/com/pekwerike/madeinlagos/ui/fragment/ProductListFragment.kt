@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,8 +19,8 @@ import com.pekwerike.madeinlagos.OnBackPressed
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductListBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.ProductItemClickListener
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.ProductListRecyclerViewAdapter
+import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductItemClickListener
+import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductListRecyclerViewAdapter
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -71,7 +70,7 @@ class ProductListFragment : Fragment() {
                     }
                     mainActivityViewModel.isSearchActive -> {
                         mainActivityViewModel.stopSearch()
-                        fragmentProductListBinding.fragmentProductListSearchBar.apply {
+                        fragmentProductListBinding.productListSearchBar.apply {
                             clearFocus()
                             setText("")
                         }
@@ -120,7 +119,7 @@ class ProductListFragment : Fragment() {
                     }
                 })
             }
-            fragmentProductListSearchBar.apply {
+            productListSearchBar.apply {
                 addTextChangedListener {
                     if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
                         == true
@@ -172,7 +171,7 @@ class ProductListFragment : Fragment() {
 
     fun hideKeyBoard() {
         inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
-        fragmentProductListBinding.fragmentProductListSearchBar.clearFocus()
+        fragmentProductListBinding.productListSearchBar.clearFocus()
         newKeyBoardState(false)
     }
 
@@ -193,19 +192,19 @@ class ProductListFragment : Fragment() {
                     fragmentProductListBinding.swipeToRefreshProductList.isRefreshing = false
                     when (it) {
                         is NetworkResult.Success -> {
-                            fragmentProductListBinding.fragmentProductListUserLabel.animate()
+                            fragmentProductListBinding.productListUserLabel.animate()
                                 .alpha(0f)
                         }
                         is NetworkResult.NoInternetConnection -> {
                             if (allProductsWithReviews.value?.isEmpty() == true) {
-                                fragmentProductListBinding.fragmentProductListUserLabel.apply {
+                                fragmentProductListBinding.productListUserLabel.apply {
                                     animate().alpha(1f)
                                     text = getString(R.string.no_internet_connection_label)
                                 }
                             }
                         }
                         is NetworkResult.HttpError -> {
-                            fragmentProductListBinding.fragmentProductListUserLabel.apply {
+                            fragmentProductListBinding.productListUserLabel.apply {
                                 animate().alpha(1f)
                                 text = getString(R.string.server_downtime)
                             }
@@ -222,16 +221,16 @@ class ProductListFragment : Fragment() {
                 it?.let {
                     productListRecyclerViewAdapter.submitList(it)
                     if (it.isEmpty()) {
-                        fragmentProductListBinding.fragmentProductListUserLabel.text =
+                        fragmentProductListBinding.productListUserLabel.text =
                             String.format(
                                 getString(
                                     R.string.no_results_found_label,
-                                    fragmentProductListBinding.fragmentProductListSearchBar.text.toString()
+                                    fragmentProductListBinding.productListSearchBar.text.toString()
                                 )
                             )
-                        fragmentProductListBinding.fragmentProductListUserLabel.animate().alpha(1f)
+                        fragmentProductListBinding.productListUserLabel.animate().alpha(1f)
                     } else {
-                        fragmentProductListBinding.fragmentProductListUserLabel.animate().alpha(0f)
+                        fragmentProductListBinding.productListUserLabel.animate().alpha(0f)
                     }
                 }
             }

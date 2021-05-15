@@ -1,8 +1,7 @@
-package com.pekwerike.madeinlagos.ui.recyclerviewcomponents
+package com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.ViewParent
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface ProductDAO {
 
     @Transaction
-    suspend fun refreshProductList(productEntityList: List<ProductEntity>){
+    suspend fun refreshProductList(productEntityList: List<ProductEntity>) {
         deleteAllProductsWithReviews()
         insertAllProducts(productEntityList)
     }
@@ -25,15 +25,19 @@ interface ProductDAO {
 
     @Transaction
     @Query("SELECT * FROM product_table")
-    fun getAllProductWithReviews(): Flow<List<ProductWithReviews>>
+    fun getAllProductWithReviewsAsFlow(): Flow<List<ProductWithReviews>>
 
     @Transaction
     @Query("SELECT * FROM product_table")
     fun getAllProductWithReviewsAsLiveData(): LiveData<List<ProductWithReviews>>
 
     @Transaction
+    @Query("SELECT * FROM product_table")
+    fun getAllProductsWithReviews(): List<ProductWithReviews>
+
+    @Transaction
     @Query("SELECT * FROM product_table WHERE id = :productId")
-    fun getProductWithReviewsByProductId(productId: String): Flow<ProductWithReviews>
+    fun getProductWithReviewsByProductId(productId: String): ProductWithReviews
 
     @Transaction
     @Query("DELETE FROM product_table")

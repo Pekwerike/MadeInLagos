@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.transition.MaterialContainerTransform
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductReviewBinding
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
@@ -17,10 +19,12 @@ class ProductReviewFragment : Fragment() {
 
     private lateinit var fragmentProductReviewBinding: FragmentProductReviewBinding
     private val sharedViewModel: MainActivityViewModel by viewModels()
+    private val navArgs : ProductReviewFragmentArgs by navArgs()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        sharedElementEnterTransition = MaterialContainerTransform()
         fragmentProductReviewBinding = FragmentProductReviewBinding.inflate(
             inflater,
             container, false
@@ -33,7 +37,7 @@ class ProductReviewFragment : Fragment() {
                 val userReviewText =
                     fragmentProductReviewBinding.productReviewEditText.text.toString()
                 // post the rating and the text to the server
-                sharedViewModel.postProductReview(userRating, userReviewText)
+                sharedViewModel.postProductReview(navArgs.productId, userRating, userReviewText)
                 true
             } else false
         }

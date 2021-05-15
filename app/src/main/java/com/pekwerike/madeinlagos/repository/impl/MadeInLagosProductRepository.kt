@@ -4,19 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import com.pekwerike.madeinlagos.database.ProductWithReviews
-import com.pekwerike.madeinlagos.mappers.productReviewToProductReviewEntityList
-import com.pekwerike.madeinlagos.mappers.toProductEntityList
-import com.pekwerike.madeinlagos.mappers.toProductReviewList
+import com.pekwerike.madeinlagos.mappers.*
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.model.ProductReview
+import com.pekwerike.madeinlagos.model.ProductsAndNetworkState
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import java.net.UnknownHostException
 import kotlin.math.roundToInt
 
@@ -89,4 +86,46 @@ class MadeInLagosProductRepository @Inject constructor(
             NetworkResult.NoInternetConnection
         }
     }
+
+    override suspend fun getProductById(productId: String): Product {
+        return productDao.getProductWithReviewsByProductId(productId)
+            .productWithReviewsToProduct()
+    }
+
+    override suspend fun fetchAllProducts(): ProductsAndNetworkState {
+        // get products from network first
+        // insert the fetched products into the database
+        // retrieve the list of products from the database
+        // return the list of products and network state to the user
+        return when (val networkResult = networkProductService.getAllProduct()) {
+            is NetworkResult.Success.AllProducts -> {
+                productDao.refreshProductList(networkResult.products.toProductEntityList())
+                val productList = productDao.getAllProductsWithReviews().productWithReviewsToProductList()
+                ProductsAndNetworkState(
+                    productList,
+                    networkResult
+                )
+            }
+            is NetworkResult.NoInternetConnection -> {
+                ProductsAndNetworkState(
+                    listOf(),
+                    networkResult
+                )
+
+            }
+            is NetworkResult.HttpError -> {
+                ProductsAndNetworkState(
+                    listOf(),
+                    networkResult
+                )
+            }
+            else -> {
+                ProductsAndNetworkState(
+                    listOf(),
+                    networkResult
+                )
+            }
+        }
+    }
 }
+

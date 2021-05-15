@@ -1,6 +1,7 @@
 package com.pekwerike.madeinlagos.di
 
 import android.content.Context
+import android.os.Build
 import android.view.inputmethod.InputMethodManager
 import dagger.Module
 import dagger.Provides
@@ -11,10 +12,14 @@ import dagger.hilt.components.SingletonComponent
 
 @InstallIn(ActivityComponent::class)
 @Module
-object AndroidComponentsDIModule {
+class AndroidComponentsDIModule {
 
     @Provides
     fun getInputManager(@ApplicationContext context: Context): InputMethodManager {
-        return context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context.getSystemService(InputMethodManager::class.java) as InputMethodManager
+        } else {
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        }
     }
 }

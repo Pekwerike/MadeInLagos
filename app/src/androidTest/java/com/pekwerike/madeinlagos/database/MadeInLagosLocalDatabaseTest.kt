@@ -1,7 +1,5 @@
 package com.pekwerike.madeinlagos.database
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.pekwerike.madeinlagos.mappers.*
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.model.ProductReview
@@ -58,7 +56,7 @@ class MadeInLagosLocalDatabaseTest {
                 productDataSource.getProducts().toProductEntityList()
             )
             assertEquals(23, productDao.getAllProducts().first().size)
-            assertEquals(23, productDao.getAllProductWithReviews().first().size)
+            assertEquals(23, productDao.getAllProductWithReviewsAsFlow().first().size)
         }
     }
 
@@ -70,8 +68,7 @@ class MadeInLagosLocalDatabaseTest {
                 productDataSource.getProducts().toProductEntityList()
             )
             val product: Product =
-                productDao.getProductWithReviewsByProductId(productId = "FI444").first()
-                    .productWithReviewsToProduct()
+                productDao.getProductWithReviewsByProductId(productId = "FI444").productWithReviewsToProduct()
             assertEquals(product.id, "FI444")
             assertEquals(product.name, "updated product name")
             assert(product.productReviews.isEmpty())
@@ -93,7 +90,7 @@ class MadeInLagosLocalDatabaseTest {
                     text = "Yo, beautiful product, Thank you Adidas"
                 ).productReviewToProductReviewEntity()
             )
-            val product = productDao.getProductWithReviewsByProductId("FI444").first()
+            val product = productDao.getProductWithReviewsByProductId("FI444")
                 .productWithReviewsToProduct()
             assert(product.productReviews.isNotEmpty())
             assertEquals("Yo, beautiful product, Thank you Adidas", product.productReviews[0].text)
@@ -124,8 +121,7 @@ class MadeInLagosLocalDatabaseTest {
                     ).productReviewToProductReviewEntity()
                 )
             )
-            val product = productDao.getProductWithReviewsByProductId("FI444").first()
-                .productWithReviewsToProduct()
+            val product = productDao.getProductWithReviewsByProductId("FI444").productWithReviewsToProduct()
 
             productDao.deleteAllProductsWithReviews()
             val allProductReviews: List<ProductReview> =

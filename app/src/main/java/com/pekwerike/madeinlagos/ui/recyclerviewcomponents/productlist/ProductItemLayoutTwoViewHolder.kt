@@ -1,4 +1,4 @@
-package com.pekwerike.madeinlagos.ui.recyclerviewcomponents
+package com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pekwerike.madeinlagos.R
-import com.pekwerike.madeinlagos.databinding.ProductItemLayoutBinding
 import com.pekwerike.madeinlagos.databinding.ProductItemLayoutTwoBinding
 import com.pekwerike.madeinlagos.model.Product
 
