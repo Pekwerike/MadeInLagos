@@ -45,8 +45,8 @@ class ProductListFragment : Fragment() {
 
                 findNavController()
                     .navigate(
-                        ProductListFragmentDirections.actionProductListFragment2ToProductReviewFragment2()
-
+                        ProductListFragmentDirections.actionProductListFragment2ToProductDetailFragment2(),
+                        navigationExtras
                     )
             } else {
                 findNavController()
@@ -95,10 +95,10 @@ class ProductListFragment : Fragment() {
                 post {
                     startPostponedEnterTransition()
                 }
-               /* viewTreeObserver.addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
-                }*/
+                /* viewTreeObserver.addOnPreDrawListener {
+                     startPostponedEnterTransition()
+                     true
+                 }*/
                 val gridSpanCount =
                     if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         3
