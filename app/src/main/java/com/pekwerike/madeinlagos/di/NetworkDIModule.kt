@@ -1,22 +1,34 @@
 package com.pekwerike.madeinlagos.di
 
 
-import com.squareup.moshi.JsonAdapter
+import com.pekwerike.madeinlagos.network.ProductServiceAPI
+import com.pekwerike.madeinlagos.network.retrofit.ProductServiceRetrofitAPI
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.features.json.*
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 @InstallIn(SingletonComponent::class)
 @Module
 class NetworkDIModule {
+
+    @Provides
+    fun getProductServiceRetrofitAPI(retrofit: Retrofit): ProductServiceRetrofitAPI {
+        return retrofit.create(ProductServiceRetrofitAPI::class.java)
+    }
+
+    @Provides
+    fun getRetrofit(moshi: Moshi): Retrofit {
+        return Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(ProductServiceAPI.BASE_URL)
+            .build()
+    }
+
 
     @Provides
     fun getMoshi(): Moshi {
@@ -25,12 +37,4 @@ class NetworkDIModule {
             .build()
     }
 
-    @Provides
-    fun getHttpClient(): HttpClient {
-        return HttpClient(Android) {
-            install(JsonFeature) {
-                serializer = JacksonSerializer()
-            }
-        }
-    }
 }

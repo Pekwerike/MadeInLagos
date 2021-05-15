@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.network
 
+import android.util.Log
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -39,7 +40,9 @@ class ProductServiceTest {
             when (val networkResult = productService.getAllProduct()) {
                 is NetworkResult.Success.AllProducts -> {
                     assert(networkResult.products.isNotEmpty())
-
+                    networkResult.products.forEach {
+                        Log.i("Products", it.id)
+                    }
                 }
                 is NetworkResult.NoInternetConnection -> {
                     assert(false)

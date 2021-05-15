@@ -5,18 +5,13 @@ import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.model.ProductReview
 import com.pekwerike.madeinlagos.network.ProductReviewAPI
 import com.pekwerike.madeinlagos.network.ProductServiceAPI
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.HTTP
 import java.net.UnknownHostException
 import javax.inject.Inject
 
-class ProductServiceImplTwo @Inject constructor(
+class ProductServiceRetrofitImpl @Inject constructor(
     private val productServiceRetrofitAPI:
     ProductServiceRetrofitAPI
-) :
-    ProductServiceAPI, ProductReviewAPI {
-
+) : ProductServiceAPI, ProductReviewAPI {
 
     override suspend fun getAllProduct(): NetworkResult {
         return try {
@@ -95,6 +90,28 @@ class ProductServiceImplTwo @Inject constructor(
     }
 
     override suspend fun postProductReview(productReview: ProductReview): NetworkResult {
-        return NetworkResult.Success.NoResponse
+        return try {
+            val response = productServiceRetrofitAPI.postProductReview(
+                String.format(
+                    ProductReviewAPI.PRODUCT_REVIEW_BASE_URL,
+                    productReview.productId
+                ),
+                productReview
+            )
+            if (response.isSuccessful) {
+                val review = response.body()
+                if (review != null) {
+                    NetworkResult.Success.SingleProductReview(review)
+                } else {
+                    NetworkResult.Success.NoResponse
+                }
+            } else {
+                NetworkResult.HttpError(response.code())
+            }
+        } catch (unknownHostException: UnknownHostException) {
+            NetworkResult.NoInternetConnection
+        } catch (exception: Exception) {
+            NetworkResult.NoInternetConnection
+        }
     }
 }

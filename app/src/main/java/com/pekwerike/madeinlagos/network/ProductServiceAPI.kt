@@ -5,8 +5,9 @@ import com.pekwerike.madeinlagos.model.Product
 
 interface ProductServiceAPI {
     companion object {
-        const val BASE_PRODUCT_URL = "https://tour.silent.ws/product/"
-        const val SINGLE_PRODUCT_URL = "https://tour.silent.ws/product/%s/"
+        const val BASE_PRODUCT_URL = "product/"
+        const val SINGLE_PRODUCT_URL = "product/%s/"
+        const val BASE_URL = "https://tour.silent.ws/"
     }
 
     suspend fun getAllProduct(): NetworkResult
