@@ -71,4 +71,8 @@ class MainActivityViewModel @Inject constructor(
     fun selectProduct(product: Product) {
         _selectedProduct.value = product
     }
+
+    fun postProductReview(userRating: Float , userReviewText: String){
+        mainRepositoryAPI.pos
+    }
 }

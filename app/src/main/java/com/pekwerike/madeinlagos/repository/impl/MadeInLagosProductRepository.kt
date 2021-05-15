@@ -16,6 +16,7 @@ import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.net.UnknownHostException
 
 class MadeInLagosProductRepository @Inject constructor(
     madeInLagosLocalDatabase: MadeInLagosLocalDatabase,
@@ -63,5 +64,18 @@ class MadeInLagosProductRepository @Inject constructor(
             )
         }
         return networkResult
+    }
+
+    override suspend fun postProductReview(
+        userRating: Float,
+        userReviewText: String
+    ): NetworkResult {
+        return try {
+
+        } catch (unknownHostException: UnknownHostException) {
+            NetworkResult.NoInternetConnection
+        } catch (exception: Exception) {
+            NetworkResult.NoInternetConnection
+        }
     }
 }

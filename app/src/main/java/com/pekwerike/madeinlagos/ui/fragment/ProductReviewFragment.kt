@@ -6,44 +6,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.pekwerike.madeinlagos.R
+import com.pekwerike.madeinlagos.databinding.FragmentProductReviewBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ProductReviewFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProductReviewFragment : Fragment() {
 
+    private lateinit var fragmentProductReviewBinding: FragmentProductReviewBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        fragmentProductReviewBinding = FragmentProductReviewBinding.inflate(
+            inflater,
+            container, false
+        )
+        fragmentProductReviewBinding.fragmentProductReviewToolbar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.post_review_menu_item) {
+                // get the rating value
+                val rating = fragmentProductReviewBinding.productReviewRatingBar.rating
+                // get the text
+                val productReviewText =
+                    fragmentProductReviewBinding.productReviewEditText.text.toString()
+                // post the rating and the text to the server
+
+                true
+            } else false
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_review, container, false)
+        return fragmentProductReviewBinding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProductReviewFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductReviewFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }

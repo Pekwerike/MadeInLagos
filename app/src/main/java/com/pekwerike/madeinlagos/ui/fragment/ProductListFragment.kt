@@ -45,10 +45,8 @@ class ProductListFragment : Fragment() {
 
                 findNavController()
                     .navigate(
-                        ProductListFragmentDirections.actionProductListFragment2ToProductDetailFragment2(
-                            product.id
-                        ),
-                        navigationExtras
+                        ProductListFragmentDirections.actionProductListFragment2ToProductReviewFragment2()
+
                     )
             } else {
                 findNavController()
@@ -87,74 +85,83 @@ class ProductListFragment : Fragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        postponeEnterTransition()
+        fragmentProductListBinding.apply {
+            productListRecyclerView.apply {
+                productListRecyclerViewAdapter.submitList(listOf())
+                adapter = productListRecyclerViewAdapter
+                post {
+                    startPostponedEnterTransition()
+                }
+               /* viewTreeObserver.addOnPreDrawListener {
+                    startPostponedEnterTransition()
+                    true
+                }*/
+                val gridSpanCount =
+                    if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                        3
+                    } else {
+                        2
+                    }
+                layoutManager = StaggeredGridLayoutManager(
+                    gridSpanCount,
+                    StaggeredGridLayoutManager.VERTICAL
+                )
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(
+                        recyclerView: RecyclerView,
+                        newState: Int
+                    ) {
+                        if (isKeyBoardOpen) {
+                            hideKeyBoard()
+                        }
+                    }
+                })
+            }
+            fragmentProductListSearchBar.apply {
+                addTextChangedListener {
+                    if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
+                        == true
+                    ) {
+                        mainActivityViewModel.filterProductList(it.toString())
+                    }
+                }
+                setOnEditorActionListener { _, actionId, _ ->
+                    return@setOnEditorActionListener when (actionId) {
+                        EditorInfo.IME_ACTION_SEARCH -> {
+                            if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
+                                == true
+                            ) {
+                                mainActivityViewModel.filterProductList(text.toString())
+                            }
+                            true
+                        }
+                        else -> false
+                    }
+                }
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (hasFocus) {
+                        newKeyBoardState(true)
+                    }
+                }
+            }
+
+
+            swipeToRefreshProductList.setOnRefreshListener {
+                mainActivityViewModel.refreshProductList()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
         fragmentProductListBinding = FragmentProductListBinding
-            .inflate(inflater, container, false).apply {
-
-                fragmentProductListSearchBar.apply {
-                    addTextChangedListener {
-                        if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
-                            == true
-                        ) {
-                            mainActivityViewModel.filterProductList(it.toString())
-                        }
-                    }
-                    setOnEditorActionListener { _, actionId, _ ->
-                        return@setOnEditorActionListener when (actionId) {
-                            EditorInfo.IME_ACTION_SEARCH -> {
-                                if (mainActivityViewModel.allProductsWithReviews.value?.isNotEmpty()
-                                    == true
-                                ) {
-                                    mainActivityViewModel.filterProductList(text.toString())
-                                }
-                                true
-                            }
-                            else -> false
-                        }
-                    }
-                    setOnFocusChangeListener { _, hasFocus ->
-                        if (hasFocus) {
-                            newKeyBoardState(true)
-                        }
-                    }
-                }
-
-                productListRecyclerView.apply {
-                    adapter = productListRecyclerViewAdapter
-                    postponeEnterTransition()
-                    viewTreeObserver.addOnPreDrawListener {
-                        startPostponedEnterTransition()
-                        true
-                    }
-                    val gridSpanCount =
-                        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                            3
-                        } else {
-                            2
-                        }
-                    layoutManager = StaggeredGridLayoutManager(
-                        gridSpanCount,
-                        StaggeredGridLayoutManager.VERTICAL
-                    )
-                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrollStateChanged(
-                            recyclerView: RecyclerView,
-                            newState: Int
-                        ) {
-                            if (isKeyBoardOpen) {
-                                hideKeyBoard()
-                            }
-                        }
-                    })
-                }
-                swipeToRefreshProductList.setOnRefreshListener {
-                    mainActivityViewModel.refreshProductList()
-                }
-            }
+            .inflate(inflater, container, false)
 
         return fragmentProductListBinding.root
     }

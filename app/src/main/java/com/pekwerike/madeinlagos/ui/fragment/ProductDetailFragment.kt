@@ -32,12 +32,9 @@ class ProductDetailFragment : Fragment() {
     private val args: ProductDetailFragmentArgs by navArgs()
     private lateinit var fragmentProductDetailBinding: FragmentProductDetailBinding
     private val mainActivityViewModel: MainActivityViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = 420
-        }
         observeMainActivityViewModelLiveData()
     }
 
@@ -45,14 +42,22 @@ class ProductDetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            duration = 420
+        }
         postponeEnterTransition()
-        fragmentProductDetailBinding = DataBindingUtil.inflate<FragmentProductDetailBinding>(
+        fragmentProductDetailBinding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_product_detail,
             container,
             false
-        ).apply {
+        )
+        // Inflate the layout for this fragment
+        return fragmentProductDetailBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        fragmentProductDetailBinding.apply {
             ViewCompat.setTransitionName(
                 fragmentProductDetailContainer,
                 args.productId
@@ -62,25 +67,16 @@ class ProductDetailFragment : Fragment() {
                 findNavController().navigateUp()
             }
         }
-        // Inflate the layout for this fragment
-        return fragmentProductDetailBinding.root
     }
 
     private fun observeMainActivityViewModelLiveData() {
         mainActivityViewModel.selectedProduct.observe(this) {
             it?.let { selectedProduct: Product ->
                 fragmentProductDetailBinding.apply {
-                    val placeHolder = ColorDrawable(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                android.R.color.darker_gray
-                            )
-                        ).apply {
 
-                        }
                     Glide.with(fragmentProductDetailProductImageView)
                         .load(selectedProduct.productImageUrl)
-                        .placeholder(placeHolder)
+
                         .listener(object : RequestListener<Drawable> {
                             override fun onLoadFailed(
                                 e: GlideException?,

@@ -2,6 +2,7 @@ package com.pekwerike.madeinlagos.ui.recyclerviewcomponents
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,12 +20,13 @@ class ProductItemLayoutTwoViewHolder(private val productItemLayoutTwoBinding: Pr
 
             Glide.with(productItemLayoutTwoProductImageView)
                 .load(product.productImageUrl)
+                .placeholder(ContextCompat.getDrawable(root.context, R.drawable.ic_adidas_seeklogo))
                 .into(productItemLayoutTwoProductImageView)
 
             productItemLayoutTwoCardView.transitionName = product.id
 
             productItemLayoutTwoCardView.setOnClickListener {
-                productItemClickListener.onClick(product, productItemLayoutTwoCardView)
+                productItemClickListener.onClick(product, it)
             }
             executePendingBindings()
         }

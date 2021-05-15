@@ -9,5 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="half_light">#FFFFFFFF</color>
     <color name="background_color">#FFFFFFFF</color>
-    <color name="on_background_color">#FFFFFF</color>
+    <color name="on_background_color">#FF121212</color>
 </resources>
