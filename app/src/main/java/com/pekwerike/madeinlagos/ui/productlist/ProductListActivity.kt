@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.ui.productlist
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductListBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
@@ -24,9 +26,14 @@ class ProductListActivity : AppCompatActivity() {
         ProductItemClickListener { product, clickedView ->
             // only use shared element transitioning when the app is in portrait mode
             if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    clickedView,
+                    product.id
+                )
                 Intent(this, ProductDetailActivity::class.java).also {
                     it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
-                    startActivity(it)
+                    startActivity(it, options.toBundle())
                 }
             } else {
                 Intent(this, ProductDetailActivity::class.java).also {
@@ -39,6 +46,12 @@ class ProductListActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Attach a callback used to capture the shared elements from this Activity to be used
+        // by the container transform transition
+        postponeEnterTransition()
+        setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        // Keep system bars (status bar, navigation bar) persistent throughout the transition.
+        window.sharedElementsUseOverlay = true
         super.onCreate(savedInstanceState)
         productListActivityBinding = ActivityProductListBinding.inflate(layoutInflater)
         setContentView(productListActivityBinding.root)
@@ -89,6 +102,9 @@ class ProductListActivity : AppCompatActivity() {
                     StaggeredGridLayoutManager.VERTICAL
                 )
                 adapter = productListRecyclerViewAdapter
+                post {
+                    startPostponedEnterTransition()
+                }
             }
             productListSearchBar.apply {
                 addTextChangedListener {
