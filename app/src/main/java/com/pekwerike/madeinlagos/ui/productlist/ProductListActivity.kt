@@ -8,7 +8,9 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductListBinding
+import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.ui.productdetail.ProductDetailActivity
 import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductItemClickListener
 import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductListRecyclerViewAdapter
@@ -49,13 +51,34 @@ class ProductListActivity : AppCompatActivity() {
             productList.observe(this@ProductListActivity) {
                 productListRecyclerViewAdapter.submitList(it)
             }
+            productFetchNetworkResult.observe(this@ProductListActivity) {
+                productListActivityBinding.swipeToRefreshProductList.isRefreshing = false
+                when (it) {
+                    is NetworkResult.Success -> {
+                        productListActivityBinding.productListUserLabel
+                        productListActivityBinding.productListUserLabel.animate().alpha(0f)
+                    }
+                    is NetworkResult.HttpError -> {
+                        productListActivityBinding.productListUserLabel.apply {
+                            animate().alpha(1f)
+                            text = getString(R.string.server_downtime)
+                        }
+                    }
+                    is NetworkResult.NoInternetConnection -> {
+                        productListActivityBinding.productListUserLabel.apply {
+                            animate().alpha(1f)
+                            text = getString(R.string.no_internet_connection_label)
+                        }
+                    }
+                }
+            }
         }
     }
 
     private fun setUpLayoutComponents() {
         productListActivityBinding.apply {
             productListRecyclerView.apply {
-               val gridSpanCount =
+                val gridSpanCount =
                     if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                         3
                     } else {

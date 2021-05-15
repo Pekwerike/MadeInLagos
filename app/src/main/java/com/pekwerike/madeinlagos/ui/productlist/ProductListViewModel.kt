@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,9 @@ class ProductListViewModel @Inject constructor(
     val productList: LiveData<List<Product>>
         get() = _productList
 
+    private val _productFetchNetworkResult = MutableLiveData<NetworkResult>()
+    val productFetchNetworkResult: LiveData<NetworkResult>
+        get() = _productFetchNetworkResult
     private var allProducts: List<Product> = listOf()
 
     init {
@@ -33,6 +37,7 @@ class ProductListViewModel @Inject constructor(
             allProducts = productsAndNetworkState.productList
             withContext(Dispatchers.Main) {
                 _productList.value = productsAndNetworkState.productList
+                _productFetchNetworkResult.value = productsAndNetworkState.networkState
             }
         }
     }
