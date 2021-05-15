@@ -9,8 +9,10 @@ import androidx.fragment.app.viewModels
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductReviewBinding
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class ProductReviewFragment : Fragment() {
 
     private lateinit var fragmentProductReviewBinding: FragmentProductReviewBinding
