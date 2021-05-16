@@ -8,7 +8,7 @@ sealed class ProductDetailRecyclerViewItemModel {
 
     data class ProductItem(val product: Product) : ProductDetailRecyclerViewItemModel() {
         override val itemId: String
-            get() = product.hashCode().toString()
+            get() = product.productImageUrl
     }
 
     object ProductReviewHeader : ProductDetailRecyclerViewItemModel() {
