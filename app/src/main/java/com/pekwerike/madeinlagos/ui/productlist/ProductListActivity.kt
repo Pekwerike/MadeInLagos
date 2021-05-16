@@ -46,12 +46,9 @@ class ProductListActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Attach a callback used to capture the shared elements from this Activity to be used
-        // by the container transform transition
         postponeEnterTransition()
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        // Keep system bars (status bar, navigation bar) persistent throughout the transition.
-        window.sharedElementsUseOverlay = true
+        window.sharedElementsUseOverlay = false
         super.onCreate(savedInstanceState)
         productListActivityBinding = ActivityProductListBinding.inflate(layoutInflater)
         setContentView(productListActivityBinding.root)
@@ -126,6 +123,17 @@ class ProductListActivity : AppCompatActivity() {
             swipeToRefreshProductList.setOnRefreshListener {
                 productListViewModel.getAllProducts()
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (productListActivityBinding.productListSearchBar.text.toString().isNotEmpty()) {
+            productListActivityBinding.productListSearchBar.apply {
+                setText("")
+                clearFocus()
+            }
+        } else {
+            super.onBackPressed()
         }
     }
 }
