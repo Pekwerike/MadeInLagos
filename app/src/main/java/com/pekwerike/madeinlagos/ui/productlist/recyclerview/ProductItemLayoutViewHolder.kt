@@ -22,7 +22,7 @@ class ProductItemLayoutViewHolder(private val productItemLayoutBinding: ProductI
 
             Glide.with(productItemLayoutProductImageView)
                 .load(product.productImageUrl)
-                .placeholder(ContextCompat.getDrawable(root.context, R.drawable.ic_adidas_seeklogo))
+                .placeholder(ContextCompat.getDrawable(root.context, R.drawable.ic_adidas_logo_wine))
                 .into(productItemLayoutProductImageView)
 
             productItemLayoutCardView.transitionName = product.id

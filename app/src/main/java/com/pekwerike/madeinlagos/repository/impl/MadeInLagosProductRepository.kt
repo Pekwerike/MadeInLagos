@@ -182,5 +182,9 @@ class MadeInLagosProductRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun getCachedProductWithReviewsById(productId: String): Product {
+        return productDao.getProductWithReviewsByProductId(productId).productWithReviewsToProduct()
+    }
 }
 

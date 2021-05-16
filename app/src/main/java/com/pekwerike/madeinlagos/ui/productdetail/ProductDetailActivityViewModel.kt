@@ -21,16 +21,17 @@ class ProductDetailActivityViewModel @Inject constructor(private val mainReposit
     val currentProductInDisplay: LiveData<Product>
         get() = _currentProductInDisplay
 
-    fun getProductById(productId: String) {
+
+    fun getProductWithReviewsFromCache(productId: String){
         viewModelScope.launch(Dispatchers.IO) {
-            val product = mainRepositoryAPI.getProductById(productId)
-            withContext(Dispatchers.Main) {
-                _currentProductInDisplay.value = product
+           val products =  mainRepositoryAPI.getCachedProductWithReviewsById(productId)
+            withContext(Dispatchers.Main){
+                _currentProductInDisplay.value = products
             }
         }
     }
 
-    fun getProductWithReviewsById(productId: String) {
+    fun getProductWithFreshReviewsById(productId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val product: Pair<Product?, NetworkResult> =
                 mainRepositoryAPI.getProductWithReviewsById(productId)

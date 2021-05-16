@@ -23,7 +23,11 @@ class ProductReviewActivity : AppCompatActivity() {
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         window.sharedElementsUseOverlay = true
         super.onCreate(savedInstanceState)
+        // use view binding to inflate the activity layout
         activityProductReviewBinding = ActivityProductReviewBinding.inflate(layoutInflater)
+        setContentView(activityProductReviewBinding.root)
+
+        // specify activity shared element transition properties
         window.sharedElementEnterTransition = MaterialContainerTransform().apply {
             addTarget(activityProductReviewBinding.activityProductReviewContainer)
             duration = 600L
@@ -32,7 +36,7 @@ class ProductReviewActivity : AppCompatActivity() {
             addTarget(activityProductReviewBinding.activityProductReviewContainer)
             duration = 600L
         }
-        setContentView(activityProductReviewBinding.root)
+
         productId = intent.getStringExtra(EXTRA_PRODUCT_ID)!!
         configureLayout()
         observeViewModelLiveData()
@@ -62,7 +66,7 @@ class ProductReviewActivity : AppCompatActivity() {
                     } else false
                 }
                 setNavigationOnClickListener {
-                    finish()
+                    supportFinishAfterTransition()
                 }
             }
         }

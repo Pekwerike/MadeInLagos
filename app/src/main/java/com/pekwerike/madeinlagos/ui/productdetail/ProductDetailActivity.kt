@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.ui.productdetail
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,9 @@ import com.pekwerike.madeinlagos.databinding.ActivityProductDetailBinding
 import com.pekwerike.madeinlagos.ui.productreview.ProductReviewActivity
 import com.pekwerike.madeinlagos.ui.productdetail.recyclerview.ProductReviewListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProductDetailActivity : AppCompatActivity() {
@@ -48,7 +52,8 @@ class ProductDetailActivity : AppCompatActivity() {
             addTarget(productDetailActivityBinding.activityProductDetailContainer)
             duration = 600L
         }
-        productDetailActivityViewModel.getProductWithReviewsById(productId)
+        productDetailActivityViewModel.getProductWithReviewsFromCache(productId)
+        productDetailActivityViewModel.getProductWithFreshReviewsById(productId)
         configureLayout()
         observeViewModelLiveData()
     }
@@ -59,12 +64,18 @@ class ProductDetailActivity : AppCompatActivity() {
                 supportFinishAfterTransition()
             }
             productDetailPostProductReviewFab.setOnClickListener {
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this@ProductDetailActivity,
+                    it,
+                    it.transitionName
+                )
                 startActivity(Intent(
                     this@ProductDetailActivity,
                     ProductReviewActivity::class.java
                 ).apply {
                     putExtra(ProductReviewActivity.EXTRA_PRODUCT_ID, productId)
-                })
+                }, options.toBundle()
+                )
             }
             productDetailProductReviewsRecyclerView.adapter = productReviewListRecyclerViewAdapter
         }
@@ -84,7 +95,12 @@ class ProductDetailActivity : AppCompatActivity() {
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            startPostponedEnterTransition()
+                            CoroutineScope(Dispatchers.Main).launch{
+                                Glide.with(this@ProductDetailActivity)
+                                    .load(R.drawable.ic_adidas_logo_wine)
+                                    .into(productDetailActivityBinding.productDetailProductImageView)
+                            }
+                                startPostponedEnterTransition()
                             return false
                         }
 
