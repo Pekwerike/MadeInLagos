@@ -17,4 +17,5 @@
     <string name="post_product_review_transition_element">postProductReviewTransitionElement</string>
     <string name="game_one">game_one</string>
     <string name="review_label">Review</string>
+    <string name="reviews">Reviews</string>
 </resources>

@@ -1,30 +1,26 @@
 package com.pekwerike.madeinlagos.ui.productdetail
 
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.target.Target
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductDetailBinding
+import com.pekwerike.madeinlagos.model.ui.ProductDetailRecyclerViewItemModel
+import com.pekwerike.madeinlagos.ui.productdetail.recyclerview.ProductDetailRecyclerViewAdapter
 import com.pekwerike.madeinlagos.ui.productreview.ProductReviewActivity
-import com.pekwerike.madeinlagos.ui.productdetail.recyclerview.ProductReviewListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @AndroidEntryPoint
 class ProductDetailActivity : AppCompatActivity() {
@@ -41,10 +37,10 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
             }
         }
+    private val productDetailRecyclerViewAdapter = ProductDetailRecyclerViewAdapter()
     private val productDetailActivityViewModel: ProductDetailActivityViewModel by viewModels()
     private lateinit var productDetailActivityBinding: ActivityProductDetailBinding
     private lateinit var productId: String
-    private val productReviewListRecyclerViewAdapter = ProductReviewListRecyclerViewAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         postponeEnterTransition()
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
@@ -73,12 +69,17 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun configureLayout() {
         productDetailActivityBinding.apply {
 
-            productDetailSwipeToRefreshLayout.setOnRefreshListener {
+            productDetailRecyclerView.apply {
+                layoutManager = LinearLayoutManager(this@ProductDetailActivity, LinearLayoutManager.VERTICAL, false)
+                adapter = productDetailRecyclerViewAdapter
+            }
+            swipeToRefreshProductDetail.setOnRefreshListener {
                 productDetailActivityViewModel.getProductWithFreshReviewsById(productId)
             }
             activityProductDetailsToolbar.setNavigationOnClickListener {
                 supportFinishAfterTransition()
             }
+
             productDetailPostProductReviewFab.setOnClickListener {
                 val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this@ProductDetailActivity,
@@ -95,55 +96,31 @@ class ProductDetailActivity : AppCompatActivity() {
                     }, options
                 )
             }
-            productDetailProductReviewsRecyclerView.adapter = productReviewListRecyclerViewAdapter
         }
     }
 
 
     private fun observeViewModelLiveData() {
         productDetailActivityViewModel.apply {
-            isConnectedToInternet.observe(this@ProductDetailActivity) {
-                if (it == false) {
-                    startPostponedEnterTransition()
-                }
-            }
             currentProductInDisplay.observe(this@ProductDetailActivity) {
-                productDetailActivityBinding.apply {
-                    productDetailSwipeToRefreshLayout.isRefreshing = false
-                    product = it
-                }
-                Glide.with(this@ProductDetailActivity)
-                    .load(it.productImageUrl)
-                    .placeholder(R.drawable.ic_adidas_logo_wine)
-                    .addListener(object : RequestListener<Drawable> {
-                        override fun onLoadFailed(
-                            e: GlideException?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            startPostponedEnterTransition()
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any?,
-                            target: Target<Drawable>?,
-                            dataSource: DataSource?,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            startPostponedEnterTransition()
-                            return false
-                        }
-
+                productDetailActivityBinding.swipeToRefreshProductDetail.isRefreshing = false
+                CoroutineScope(Dispatchers.Default).launch {
+                    val productDetailItemList = mutableListOf<ProductDetailRecyclerViewItemModel>()
+                    productDetailItemList.add(0, ProductDetailRecyclerViewItemModel.ProductItem(it))
+                    productDetailItemList.add(
+                        1,
+                        ProductDetailRecyclerViewItemModel.ProductReviewHeader
+                    )
+                    productDetailItemList.addAll(it.productReviews.map { productReview ->
+                        ProductDetailRecyclerViewItemModel.ProductReviewItem(productReview)
                     })
-                    .into(productDetailActivityBinding.productDetailProductImageView)
-
-                productReviewListRecyclerViewAdapter.submitList(
-                    it.productReviews
-                )
-
+                    withContext(Dispatchers.Main) {
+                        productDetailRecyclerViewAdapter.submitList(
+                            productDetailItemList
+                        )
+                        startPostponedEnterTransition()
+                    }
+                }
             }
         }
     }

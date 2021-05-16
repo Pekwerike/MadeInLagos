@@ -31,71 +31,20 @@
             app:title="Details" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/product_detail_swipe_to_refresh_layout"
+            android:id="@+id/swipe_to_refresh_product_detail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/standard_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activity_product_details_toolbar">
 
-            <ScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/product_detail_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:animateLayoutChanges="true"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/product_detail_product_image_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/standard_margin" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/product_detail_product_name_text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standard_margin"
-                        android:lines="1"
-                        android:padding="@dimen/textview_standard_padding"
-                        android:text="@{product.name}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/product_detail_product_price_text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standard_margin"
-                        android:lines="1"
-                        android:padding="@dimen/textview_standard_padding"
-                        android:text="@{product.productPriceWithCurrency}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                        android:textStyle="bold" />
-
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/product_detail_product_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/standard_margin"
-                        android:layout_marginVertical="4dp"
-                        android:padding="@dimen/textview_standard_padding"
-                        android:text="@{product.description}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/product_detail_product_reviews_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/standard_margin"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/product_review_item_layout" />
-
-                </LinearLayout>
-            </ScrollView>
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -113,4 +62,5 @@
             app:tint="@color/on_background_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
