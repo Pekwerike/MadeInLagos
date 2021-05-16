@@ -30,3 +30,14 @@ MadeInLagos UI is made up of multiple activities. As opposed to the Single Activ
 ### Test 
 The test layer boasts of several instrumentation unit and JVM unit tests for various components of the app. 
 
+## Open Source Libraries
+- Android jetpack libraries 
+   - [Hilt](https://dagger.dev/hilt/) - Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
+   - [Room](https://developer.android.com/jetpack/androidx/releases/room?gclid=CjwKCAjwhYOFBhBkEiwASF3KGd14uH0mczjs1QvWp9T6rrfHQgEaKr4oQ9CH9Rc_c4-HWQ2BRqfICRoC7GYQAvD_BwE&gclsrc=aw.ds) - The Room persistence library provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite.
+   - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel?gclid=CjwKCAjwhYOFBhBkEiwASF3KGbiALGtSlPqie66yGppiYX8OudQ-Su9iKz6u7RR4HAje-SqEPGhJnRoCetYQAvD_BwE&gclsrc=aw.ds) - The ViewModel class is designed to store and manage UI-related data in a lifecycle conscious way. 
+   - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - LiveData is an observable data holder class 
+- [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java
+- [Moshi](https://github.com/square/moshi) - Moshi is a modern JSON library for Android and Java.
+- [Glide](https://github.com/bumptech/glide) - Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
+- [Mockito](https://site.mockito.org/) - Tasty mocking framework for unit tests in Java 
+- [JUnit](https://junit.org/junit4/) - JUnit is a simple framework to write repeatable tests
