@@ -18,7 +18,8 @@ MadeInLagos defines the Main Repository API which specifies the various operati
 The app ViewModels hold the UI states for activities and other UI components. By using this pattern, the app can survive configuration changes, theme switches, and other system events that can lead to the destruction of an activity. 
 
 ### Concurrency
-To make the most of the device processor and bestow on the app a buttery smooth experience, Kotlin coroutines and flow are used for asynchronous operations and other java functionalities like synchronization.
+To make the most of the device processor and bestow on the app a buttery smooth experience, Kotlin coroutines and flow, along with other java functionalities like
+synchronization are used for asynchronous operations.
 
 ### Dependency Injection and Management
 MadeInLagos uses Dagger-Hilt for automated dependency injection and dependency management across all the other layers of the app.
