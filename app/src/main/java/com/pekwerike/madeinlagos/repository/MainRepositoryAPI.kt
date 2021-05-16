@@ -9,7 +9,6 @@ import com.pekwerike.madeinlagos.model.ProductsAndNetworkState
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepositoryAPI {
-    val allProductsWithReviewsAsLiveData: LiveData<List<Product>>
     suspend fun refreshProductList(): NetworkResult
     suspend fun getProductReviewsByProductId(productId: String): NetworkResult
     suspend fun postProductReview(

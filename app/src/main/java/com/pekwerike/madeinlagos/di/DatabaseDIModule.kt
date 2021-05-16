@@ -3,6 +3,7 @@ package com.pekwerike.madeinlagos.di
 import android.content.Context
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
 import com.pekwerike.madeinlagos.database.ProductDAO
+import com.pekwerike.madeinlagos.database.ProductReviewDAO
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,16 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 @Module
 class DatabaseDIModule {
+
+    @Provides
+    fun getProductDao(madeInLagosLocalDatabase: MadeInLagosLocalDatabase): ProductDAO {
+        return madeInLagosLocalDatabase.productDAO()
+    }
+
+    @Provides
+    fun getProductReviewDao(madeInLagosLocalDatabase: MadeInLagosLocalDatabase): ProductReviewDAO {
+        return madeInLagosLocalDatabase.productReviewDAO()
+    }
 
     @Provides
     @Singleton

@@ -1,9 +1,10 @@
 package com.pekwerike.madeinlagos.repository.impl
 
-import android.net.Network
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
-import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
+import com.pekwerike.madeinlagos.database.ProductDAO
+import com.pekwerike.madeinlagos.database.ProductReviewDAO
 import com.pekwerike.madeinlagos.database.ProductWithReviews
 import com.pekwerike.madeinlagos.mappers.*
 import com.pekwerike.madeinlagos.model.NetworkResult
@@ -15,35 +16,17 @@ import com.pekwerike.madeinlagos.network.ProductServiceAPI
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
-import java.net.UnknownHostException
-import javax.inject.Singleton
-import kotlin.math.roundToInt
 
 
 class MadeInLagosProductRepository @Inject constructor(
-    madeInLagosLocalDatabase: MadeInLagosLocalDatabase,
+    private val productDao: ProductDAO,
+    private val productReviewDao: ProductReviewDAO,
     private val networkProductService: ProductServiceAPI,
     private val networkProductReview: ProductReviewAPI,
     productDataSource: ProductDataSource,
 ) : MainRepositoryAPI {
-    private val productDao = madeInLagosLocalDatabase.productDAO()
-    private val productReviewDao = madeInLagosLocalDatabase.productReviewDAO()
-    private val allImages = productDataSource.getProductImagesUrl()
 
-    override val allProductsWithReviewsAsLiveData: LiveData<List<Product>> =
-        madeInLagosLocalDatabase.productDAO().getAllProductWithReviewsAsLiveData().map {
-            it.map { productWithReviews: ProductWithReviews ->
-                Product(
-                    id = productWithReviews.product.productId,
-                    name = productWithReviews.product.name,
-                    description = productWithReviews.product.description,
-                    currency = productWithReviews.product.currency,
-                    price = productWithReviews.product.price,
-                    productImageUrl = allImages.random(),
-                    productReviews = productWithReviews.reviews.toProductReviewList()
-                )
-            }
-        }
+    private val allImages = productDataSource.getProductImagesUrl()
 
     override suspend fun getCachedProducts(): List<Product> {
         return productDao.getAllProductsWithReviews().productWithReviewsToProductList()
@@ -102,11 +85,10 @@ class MadeInLagosProductRepository @Inject constructor(
 
     override suspend fun fetchAllProducts(): ProductsAndNetworkState {
         // get products from network first
-        // insert the fetched products into the database
-        // retrieve the list of products from the database
-        // return the list of products and network state to the user
         return when (val networkResult = networkProductService.getAllProduct()) {
             is NetworkResult.Success.AllProducts -> {
+                // insert the fetched products into the database and delete the previous list
+                // of products
                 productDao.refreshProductList(networkResult.products.map {
                     Product(
                         id = it.id,
@@ -118,6 +100,8 @@ class MadeInLagosProductRepository @Inject constructor(
                         productReviews = it.productReviews
                     )
                 }.toProductEntityList())
+
+                // retrieve the list of products from the database and return it
                 val productList =
                     productDao.getAllProductsWithReviews().productWithReviewsToProductList()
                 ProductsAndNetworkState(
@@ -126,7 +110,7 @@ class MadeInLagosProductRepository @Inject constructor(
                 )
             }
             is NetworkResult.NoInternetConnection -> {
-                // get the cached product list
+                // return the cached product list
                 ProductsAndNetworkState(
                     productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
@@ -134,12 +118,14 @@ class MadeInLagosProductRepository @Inject constructor(
 
             }
             is NetworkResult.HttpError -> {
+                // return the cached product list
                 ProductsAndNetworkState(
                     productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
                 )
             }
             else -> {
+                // return the cached product list
                 ProductsAndNetworkState(
                     productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
