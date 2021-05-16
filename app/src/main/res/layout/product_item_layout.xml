@@ -13,6 +13,7 @@
         android:id="@+id/product_item_layout_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="@string/game_one"
         android:layout_margin="6dp"
         app:cardCornerRadius="0dp"
         app:cardElevation="4dp">

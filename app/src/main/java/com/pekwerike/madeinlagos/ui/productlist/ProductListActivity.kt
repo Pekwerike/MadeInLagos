@@ -18,6 +18,9 @@ import com.pekwerike.madeinlagos.ui.productdetail.ProductDetailActivity
 import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductItemClickListener
 import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,23 +33,24 @@ class ProductListActivity : AppCompatActivity() {
     private val productListViewModel: ProductListViewModel by viewModels()
     private val productListRecyclerViewAdapter = ProductListRecyclerViewAdapter(
         ProductItemClickListener { product, clickedView ->
-            // only use shared element transitioning when the app is in portrait mode
-            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                val options = ActivityOptions.makeSceneTransitionAnimation(
-                    this,
-                    clickedView,
-                    product.id
-                )
-                Intent(this, ProductDetailActivity::class.java).also {
-                    it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
-                    startActivity(it, options.toBundle())
+
+                // only use shared element transitioning when the app is in portrait mode
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    val options = ActivityOptions.makeSceneTransitionAnimation(
+                        this@ProductListActivity,
+                        clickedView,
+                        getString(R.string.game_one)
+                    )
+                    Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
+                        it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
+                        startActivity(it, options.toBundle())
+                    }
+                } else {
+                    Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
+                        it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
+                        startActivity(it)
+                    }
                 }
-            } else {
-                Intent(this, ProductDetailActivity::class.java).also {
-                    it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
-                    startActivity(it)
-                }
-            }
         }
     )
 
@@ -66,7 +70,7 @@ class ProductListActivity : AppCompatActivity() {
         productListViewModel.apply {
             productList.observe(this@ProductListActivity) {
                 productListRecyclerViewAdapter.submitList(it)
-                if(it.isEmpty() && filterValue.value != ""){
+                if(it.isEmpty() && !filterValue.value.isNullOrEmpty()){
                     productListActivityBinding.productListUserLabel.apply {
                         text = String.format(
                             getString(

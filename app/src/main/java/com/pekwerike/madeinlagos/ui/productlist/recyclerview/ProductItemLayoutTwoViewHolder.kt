@@ -22,7 +22,7 @@ class ProductItemLayoutTwoViewHolder(private val productItemLayoutTwoBinding: Pr
                 .placeholder(ContextCompat.getDrawable(root.context, R.drawable.ic_adidas_logo_wine))
                 .into(productItemLayoutTwoProductImageView)
 
-            productItemLayoutTwoCardView.transitionName = product.id
+         //   productItemLayoutTwoCardView.transitionName = product.id
 
             productItemLayoutTwoCardView.setOnClickListener {
                 productItemClickListener.onClick(product, it)

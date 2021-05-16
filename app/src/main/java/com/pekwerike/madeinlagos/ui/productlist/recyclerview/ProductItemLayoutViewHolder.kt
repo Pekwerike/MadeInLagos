@@ -25,7 +25,7 @@ class ProductItemLayoutViewHolder(private val productItemLayoutBinding: ProductI
                 .placeholder(ContextCompat.getDrawable(root.context, R.drawable.ic_adidas_logo_wine))
                 .into(productItemLayoutProductImageView)
 
-            productItemLayoutCardView.transitionName = product.id
+           // productItemLayoutCardView.transitionName = product.id
 
             productItemLayoutCardView.setOnClickListener {
                 productItemClickListener.onClick(product, it)

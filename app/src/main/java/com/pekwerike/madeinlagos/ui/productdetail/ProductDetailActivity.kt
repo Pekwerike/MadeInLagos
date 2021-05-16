@@ -43,7 +43,7 @@ class ProductDetailActivity : AppCompatActivity() {
         productDetailActivityBinding = DataBindingUtil.setContentView(
             this, R.layout.activity_product_detail
         )
-        productDetailActivityBinding.activityProductDetailContainer.transitionName = productId
+
         window.sharedElementEnterTransition = MaterialContainerTransform().apply {
             addTarget(productDetailActivityBinding.activityProductDetailContainer)
             duration = 600L
@@ -60,6 +60,7 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun configureLayout() {
         productDetailActivityBinding.apply {
+
             productDetailSwipeToRefreshLayout.setOnRefreshListener {
                 productDetailActivityViewModel.getProductWithFreshReviewsById(productId)
             }
@@ -88,6 +89,11 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun observeViewModelLiveData() {
         productDetailActivityViewModel.apply {
+            isConnectedToInternet.observe(this@ProductDetailActivity){
+                if(it == false){
+                    startPostponedEnterTransition()
+                }
+            }
             currentProductInDisplay.observe(this@ProductDetailActivity) {
                 productDetailActivityBinding.apply {
                     productDetailSwipeToRefreshLayout.isRefreshing = false
@@ -95,18 +101,14 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
                 Glide.with(this@ProductDetailActivity)
                     .load(it.productImageUrl)
-                    .listener(object : RequestListener<Drawable> {
+                    .placeholder(R.drawable.ic_adidas_logo_wine)
+                    .addListener(object:  RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
                             model: Any?,
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                Glide.with(this@ProductDetailActivity)
-                                    .load(R.drawable.ic_adidas_logo_wine)
-                                    .into(productDetailActivityBinding.productDetailProductImageView)
-                            }
                             startPostponedEnterTransition()
                             return false
                         }
@@ -121,12 +123,14 @@ class ProductDetailActivity : AppCompatActivity() {
                             startPostponedEnterTransition()
                             return false
                         }
+
                     })
                     .into(productDetailActivityBinding.productDetailProductImageView)
 
                 productReviewListRecyclerViewAdapter.submitList(
                     it.productReviews
                 )
+
             }
         }
     }
