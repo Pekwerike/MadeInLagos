@@ -3,6 +3,8 @@ package com.pekwerike.madeinlagos.ui.productreview
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductReviewBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,8 +20,18 @@ class ProductReviewActivity : AppCompatActivity() {
 
     private lateinit var productId: String
     override fun onCreate(savedInstanceState: Bundle?) {
+        setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
+        window.sharedElementsUseOverlay = true
         super.onCreate(savedInstanceState)
         activityProductReviewBinding = ActivityProductReviewBinding.inflate(layoutInflater)
+        window.sharedElementEnterTransition = MaterialContainerTransform().apply {
+            addTarget(activityProductReviewBinding.activityProductReviewContainer)
+            duration = 600L
+        }
+        window.sharedElementReturnTransition = MaterialContainerTransform().apply {
+            addTarget(activityProductReviewBinding.activityProductReviewContainer)
+            duration = 600L
+        }
         setContentView(activityProductReviewBinding.root)
         productId = intent.getStringExtra(EXTRA_PRODUCT_ID)!!
         configureLayout()
