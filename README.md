@@ -41,3 +41,6 @@ The test layer boasts of several instrumentation unit and JVM unit tests for var
 - [Glide](https://github.com/bumptech/glide) - Glide is a fast and efficient open source media management and image loading framework for Android that wraps media decoding, memory and disk caching, and resource pooling into a simple and easy to use interface.
 - [Mockito](https://site.mockito.org/) - Tasty mocking framework for unit tests in Java 
 - [JUnit](https://junit.org/junit4/) - JUnit is a simple framework to write repeatable tests
+
+## How to install and run the app?
+Clone this repository and open it using android studio 4.2 or higher.
