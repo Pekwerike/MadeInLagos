@@ -31,7 +31,7 @@ MadeInLagos UI is made up of multiple activities. As opposed to the Single Activ
 The test layer boasts of several instrumentation unit and JVM unit tests for various components of the app. 
 
 ## Open Source Libraries
-- Android jetpack libraries 
+- [Android jetpack libraries](https://developer.android.com/jetpack/androidx/explorer?gclid=CjwKCAjwhYOFBhBkEiwASF3KGTac0YRSxUBKOGs8ijgrUnngjG5jASGw5R09q_RvBa8o757jVzWoFRoCywYQAvD_BwE&gclsrc=aw.ds) - Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.
    - [Hilt](https://dagger.dev/hilt/) - Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
    - [Room](https://developer.android.com/jetpack/androidx/releases/room?gclid=CjwKCAjwhYOFBhBkEiwASF3KGd14uH0mczjs1QvWp9T6rrfHQgEaKr4oQ9CH9Rc_c4-HWQ2BRqfICRoC7GYQAvD_BwE&gclsrc=aw.ds) - The Room persistence library provides an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite.
    - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel?gclid=CjwKCAjwhYOFBhBkEiwASF3KGbiALGtSlPqie66yGppiYX8OudQ-Su9iKz6u7RR4HAje-SqEPGhJnRoCetYQAvD_BwE&gclsrc=aw.ds) - The ViewModel class is designed to store and manage UI-related data in a lifecycle conscious way. 
