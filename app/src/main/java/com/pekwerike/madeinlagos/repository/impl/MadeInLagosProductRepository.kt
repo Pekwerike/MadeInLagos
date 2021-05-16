@@ -16,7 +16,9 @@ import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import com.pekwerike.madeinlagos.utils.ProductDataSource
 import javax.inject.Inject
 import java.net.UnknownHostException
+import javax.inject.Singleton
 import kotlin.math.roundToInt
+
 
 class MadeInLagosProductRepository @Inject constructor(
     madeInLagosLocalDatabase: MadeInLagosLocalDatabase,

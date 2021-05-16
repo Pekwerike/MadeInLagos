@@ -48,7 +48,7 @@ class ProductDetailActivity : AppCompatActivity() {
             addTarget(productDetailActivityBinding.activityProductDetailContainer)
             duration = 600L
         }
-        productDetailActivityViewModel.getProductById(productId)
+        productDetailActivityViewModel.getProductWithReviewsById(productId)
         configureLayout()
         observeViewModelLiveData()
     }

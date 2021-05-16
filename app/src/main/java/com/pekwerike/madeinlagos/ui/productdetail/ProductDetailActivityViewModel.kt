@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
 import com.pekwerike.madeinlagos.repository.MainRepositoryAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,6 +26,18 @@ class ProductDetailActivityViewModel @Inject constructor(private val mainReposit
             val product = mainRepositoryAPI.getProductById(productId)
             withContext(Dispatchers.Main) {
                 _currentProductInDisplay.value = product
+            }
+        }
+    }
+
+    fun getProductWithReviewsById(productId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val product: Pair<Product?, NetworkResult> =
+                mainRepositoryAPI.getProductWithReviewsById(productId)
+            withContext(Dispatchers.Main) {
+                if (product.first != null) {
+                    _currentProductInDisplay.value = product.first!!
+                }
             }
         }
     }

@@ -86,7 +86,26 @@ class ProductServiceRetrofitImpl @Inject constructor(
     }
 
     override suspend fun getProductReviews(productId: String): NetworkResult {
-        return NetworkResult.Success.NoResponse
+        return try {
+            val response = productServiceRetrofitAPI.getReviewsForProduct(
+                String.format(
+                    ProductReviewAPI.PRODUCT_REVIEW_BASE_URL,
+                    productId
+                )
+            )
+            if (response.isSuccessful) {
+                val productReviews: List<ProductReview> = response.body() ?: listOf()
+                NetworkResult.Success.ProductReviews(
+                    productReviews
+                )
+            } else {
+                NetworkResult.HttpError(response.code())
+            }
+        } catch (unknownHostException: UnknownHostException) {
+            NetworkResult.NoInternetConnection
+        } catch (exception: Exception) {
+            NetworkResult.NoInternetConnection
+        }
     }
 
     override suspend fun postProductReview(productReview: ProductReview): NetworkResult {

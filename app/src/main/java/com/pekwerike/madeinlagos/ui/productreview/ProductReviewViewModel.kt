@@ -23,13 +23,13 @@ class ProductReviewViewModel @Inject constructor(
 
     fun postProductReview(productId: String, userRating: Int, userReview: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val networkResult = mainRepositoryAPI.postProductReview(
+            val postedReview = mainRepositoryAPI.postProductReview(
                 productId,
                 userRating,
                 userReview
             )
             withContext(Dispatchers.Main) {
-                _reviewPostNetworkResult.value = networkResult
+                _reviewPostNetworkResult.value = postedReview.second!!
             }
         }
     }
