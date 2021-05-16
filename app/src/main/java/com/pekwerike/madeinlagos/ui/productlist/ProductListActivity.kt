@@ -48,7 +48,7 @@ class ProductListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         postponeEnterTransition()
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        window.sharedElementsUseOverlay = false
+        window.sharedElementsUseOverlay = true
         super.onCreate(savedInstanceState)
         productListActivityBinding = ActivityProductListBinding.inflate(layoutInflater)
         setContentView(productListActivityBinding.root)
@@ -65,20 +65,36 @@ class ProductListActivity : AppCompatActivity() {
                 productListActivityBinding.swipeToRefreshProductList.isRefreshing = false
                 when (it) {
                     is NetworkResult.Success -> {
-                        productListActivityBinding.productListUserLabel
-                        productListActivityBinding.productListUserLabel.animate().alpha(0f)
+                        productListActivityBinding.apply {
+                            productListUserLabel.animate().alpha(0f)
+                            initialFetchingDataFromServerProgressIndicator.animate().alpha(0f)
+                        }
                     }
                     is NetworkResult.HttpError -> {
-                        productListActivityBinding.productListUserLabel.apply {
-                            animate().alpha(1f)
-                            text = getString(R.string.server_downtime)
+                        if (productList.value?.isEmpty() == true) {
+                            productListActivityBinding.apply {
+                                initialFetchingDataFromServerProgressIndicator.animate().alpha(0f)
+                                productListUserLabel.apply {
+                                    animate().alpha(1f)
+                                    text = getString(R.string.server_downtime)
+                                }
+                            }
                         }
                     }
                     is NetworkResult.NoInternetConnection -> {
-                        productListActivityBinding.productListUserLabel.apply {
-                            animate().alpha(1f)
-                            text = getString(R.string.no_internet_connection_label)
+                        if (productList.value?.isEmpty() == true) {
+                            productListActivityBinding.apply {
+                                initialFetchingDataFromServerProgressIndicator.animate().alpha(0f)
+                                productListUserLabel.apply {
+                                    animate().alpha(1f)
+                                    text = getString(R.string.no_internet_connection_label)
+                                }
+                            }
                         }
+                    }
+                    is NetworkResult.FetchingDataFromServer -> {
+                        productListActivityBinding.initialFetchingDataFromServerProgressIndicator.animate()
+                            .alpha(1f)
                     }
                 }
             }
@@ -121,7 +137,7 @@ class ProductListActivity : AppCompatActivity() {
                 }
             }
             swipeToRefreshProductList.setOnRefreshListener {
-                productListViewModel.getAllProducts()
+                productListViewModel.fetchNewProductsFromNetwork()
             }
         }
     }

@@ -33,7 +33,7 @@ class ProductDetailActivity : AppCompatActivity() {
         postponeEnterTransition()
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
         setExitSharedElementCallback(MaterialContainerTransformSharedElementCallback())
-        window.sharedElementsUseOverlay = false
+        window.sharedElementsUseOverlay = true
         super.onCreate(savedInstanceState)
         productId = intent.getStringExtra(EXTRA_PRODUCT_ID)!!
         productDetailActivityBinding = DataBindingUtil.setContentView(

@@ -45,6 +45,10 @@ class MadeInLagosProductRepository @Inject constructor(
             }
         }
 
+    override suspend fun getCachedProducts(): List<Product> {
+        return productDao.getAllProductsWithReviews().productWithReviewsToProductList()
+    }
+
     override suspend fun refreshProductList(): NetworkResult {
         // fetch products from network
         val networkResult = networkProductService.getAllProduct()
@@ -149,7 +153,8 @@ class MadeInLagosProductRepository @Inject constructor(
         return when (val networkResult = networkProductReview.getProductReviews(productId)) {
             is NetworkResult.Success.ProductReviews -> {
                 // insert product reviews into the database
-                productReviewDao.insertProductReviewEntityList(
+                productReviewDao.refreshProductReviewsByProductId(
+                    productId,
                     networkResult.productReviews.productReviewToProductReviewEntityList()
                 )
                 // retrieve product along with it's associated reviews from the database

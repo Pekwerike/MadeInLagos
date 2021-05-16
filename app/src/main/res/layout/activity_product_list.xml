@@ -78,4 +78,12 @@
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/initial_fetching_data_from_server_progress_indicator"
+        android:layout_margin="32dp"
+        android:alpha="0"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

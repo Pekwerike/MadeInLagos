@@ -21,4 +21,5 @@ interface MainRepositoryAPI {
     suspend fun getProductById(productId: String): Product
     suspend fun fetchAllProducts(): ProductsAndNetworkState
     suspend fun getProductWithReviewsById(productId: String): Pair<Product?, NetworkResult>
+    suspend fun getCachedProducts(): List<Product>
 }

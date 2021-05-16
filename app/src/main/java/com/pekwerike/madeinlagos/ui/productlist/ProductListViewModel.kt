@@ -28,10 +28,23 @@ class ProductListViewModel @Inject constructor(
     private var allProducts: List<Product> = listOf()
 
     init {
-        getAllProducts()
+        getCachedProducts()
+        fetchNewProductsFromNetwork()
     }
 
-    fun getAllProducts() {
+    private fun getCachedProducts() {
+        viewModelScope.launch(Dispatchers.IO) {
+            allProducts = mainRepositoryAPI.getCachedProducts()
+            withContext(Dispatchers.Main) {
+                if(allProducts.isEmpty()){
+                    _productFetchNetworkResult.value = NetworkResult.FetchingDataFromServer
+                }
+                _productList.value = allProducts
+            }
+        }
+    }
+
+    fun fetchNewProductsFromNetwork() {
         viewModelScope.launch(Dispatchers.IO) {
             val productsAndNetworkState = mainRepositoryAPI.fetchAllProducts()
             allProducts = productsAndNetworkState.productList
