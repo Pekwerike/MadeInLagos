@@ -19,8 +19,8 @@ import com.pekwerike.madeinlagos.OnBackPressed
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.FragmentProductListBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductItemClickListener
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductListRecyclerViewAdapter
+import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductItemClickListener
+import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductListRecyclerViewAdapter
 import com.pekwerike.madeinlagos.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

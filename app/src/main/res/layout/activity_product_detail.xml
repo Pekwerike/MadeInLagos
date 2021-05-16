@@ -81,7 +81,9 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/product_detail_product_reviews_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/product_review_item_layout" />
 
             </LinearLayout>
         </ScrollView>
@@ -90,11 +92,11 @@
             android:id="@+id/product_detail_post_product_review_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:transitionName="@string/post_product_review_transition_element"
             android:layout_gravity="bottom|end"
             android:layout_margin="28dp"
             android:contentDescription="@string/write_product_review_label"
             android:src="@drawable/ic_baseline_edit_24"
+            android:transitionName="@string/post_product_review_transition_element"
             app:backgroundTint="@color/half_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

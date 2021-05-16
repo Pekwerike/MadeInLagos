@@ -1,5 +1,6 @@
 package com.pekwerike.madeinlagos.repository.impl
 
+import android.net.Network
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.pekwerike.madeinlagos.database.MadeInLagosLocalDatabase
@@ -69,23 +70,24 @@ class MadeInLagosProductRepository @Inject constructor(
         productId: String,
         userRating: Int,
         userReviewText: String
-    ): NetworkResult {
-        return try {
-            networkProductReview.postProductReview(
-                ProductReview(
-                    productId = productId,
-                    rating = userRating,
-                    text = userReviewText
-                )
+    ): Pair<ProductReview?, NetworkResult> {
+
+        return when (val networkResult = networkProductReview.postProductReview(
+            ProductReview(
+                productId = productId,
+                rating = userRating,
+                text = userReviewText
             )
-            // get all reviews for the product
-            getProductReviewsByProductId(productId)
-        } catch (unknownHostException: UnknownHostException) {
-            NetworkResult.NoInternetConnection
-        } catch (exception: Exception) {
-            NetworkResult.NoInternetConnection
+        )) {
+            is NetworkResult.Success.SingleProductReview -> {
+                Pair(networkResult.productReview, networkResult)
+            }
+            else -> {
+                Pair(null, networkResult)
+            }
         }
     }
+
 
     override suspend fun getProductById(productId: String): Product {
         return productDao.getProductWithReviewsByProductId(productId)
@@ -99,7 +101,7 @@ class MadeInLagosProductRepository @Inject constructor(
         // return the list of products and network state to the user
         return when (val networkResult = networkProductService.getAllProduct()) {
             is NetworkResult.Success.AllProducts -> {
-                productDao.refreshProductList(networkResult.products.map{
+                productDao.refreshProductList(networkResult.products.map {
                     Product(
                         id = it.id,
                         name = it.name,
@@ -110,31 +112,67 @@ class MadeInLagosProductRepository @Inject constructor(
                         productReviews = it.productReviews
                     )
                 }.toProductEntityList())
-                val productList = productDao.getAllProductsWithReviews().productWithReviewsToProductList()
+                val productList =
+                    productDao.getAllProductsWithReviews().productWithReviewsToProductList()
                 ProductsAndNetworkState(
                     productList,
                     networkResult
                 )
             }
             is NetworkResult.NoInternetConnection -> {
+                // get the cached product list
                 ProductsAndNetworkState(
-                    listOf(),
+                    productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
                 )
 
             }
             is NetworkResult.HttpError -> {
                 ProductsAndNetworkState(
-                    listOf(),
+                    productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
                 )
             }
             else -> {
                 ProductsAndNetworkState(
-                    listOf(),
+                    productDao.getAllProductsWithReviews().productWithReviewsToProductList(),
                     networkResult
                 )
             }
+        }
+    }
+
+    override suspend fun getProductWithReviewsById(productId: String): Pair<Product?, NetworkResult> {
+        // fetch product reviews from the server
+        return when (val networkResult = networkProductReview.getProductReviews(productId)) {
+            is NetworkResult.Success.ProductReviews -> {
+                // insert product reviews into the database
+                productReviewDao.insertProductReviewEntityList(
+                    networkResult.productReviews.productReviewToProductReviewEntityList()
+                )
+                // retrieve product along with it's associated reviews from the database
+                val product: Product = productDao
+                    .getProductWithReviewsByProductId(productId)
+                    .productWithReviewsToProduct()
+                Pair(product, networkResult)
+            }
+            is NetworkResult.HttpError -> {
+                // get product along with it's reviews from database
+                Pair(
+                    productDao.getProductWithReviewsByProductId(productId)
+                        .productWithReviewsToProduct(), networkResult
+                )
+            }
+            is NetworkResult.NoInternetConnection -> {
+                Pair(
+                    productDao.getProductWithReviewsByProductId(productId)
+                        .productWithReviewsToProduct(), networkResult
+                )
+            }
+            else -> Pair(
+                productDao.getProductWithReviewsByProductId(productId)
+                    .productWithReviewsToProduct(), networkResult
+            )
         }
     }
 }

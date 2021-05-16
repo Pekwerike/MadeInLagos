@@ -1,4 +1,4 @@
-package com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist
+package com.pekwerike.madeinlagos.ui.productlist.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

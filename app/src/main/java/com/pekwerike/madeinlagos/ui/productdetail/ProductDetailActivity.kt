@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -17,6 +16,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductDetailBinding
 import com.pekwerike.madeinlagos.ui.productreview.ProductReviewActivity
+import com.pekwerike.madeinlagos.ui.productdetail.recyclerview.ProductReviewListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +28,7 @@ class ProductDetailActivity : AppCompatActivity() {
     private val productDetailActivityViewModel: ProductDetailActivityViewModel by viewModels()
     private lateinit var productDetailActivityBinding: ActivityProductDetailBinding
     private lateinit var productId: String
+    private val productReviewListRecyclerViewAdapter = ProductReviewListRecyclerViewAdapter()
     override fun onCreate(savedInstanceState: Bundle?) {
         postponeEnterTransition()
         setEnterSharedElementCallback(MaterialContainerTransformSharedElementCallback())
@@ -65,6 +66,7 @@ class ProductDetailActivity : AppCompatActivity() {
                     putExtra(ProductReviewActivity.EXTRA_PRODUCT_ID, productId)
                 })
             }
+            productDetailProductReviewsRecyclerView.adapter = productReviewListRecyclerViewAdapter
         }
     }
 
@@ -98,6 +100,10 @@ class ProductDetailActivity : AppCompatActivity() {
                         }
                     })
                     .into(productDetailActivityBinding.productDetailProductImageView)
+
+                productReviewListRecyclerViewAdapter.submitList(
+                    it.productReviews
+                )
             }
         }
     }

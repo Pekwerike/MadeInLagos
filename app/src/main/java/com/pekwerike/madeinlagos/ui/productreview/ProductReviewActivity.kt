@@ -15,6 +15,7 @@ class ProductReviewActivity : AppCompatActivity() {
 
     private lateinit var activityProductReviewBinding: ActivityProductReviewBinding
     private val productReviewViewModel: ProductReviewViewModel by viewModels()
+
     private lateinit var productId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

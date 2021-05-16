@@ -1,8 +1,6 @@
-package com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist
+package com.pekwerike.madeinlagos.ui.productlist.recyclerview
 
 import android.view.View
-import android.widget.ImageView
-import com.google.android.material.card.MaterialCardView
 import com.pekwerike.madeinlagos.model.Product
 
 class ProductItemClickListener(

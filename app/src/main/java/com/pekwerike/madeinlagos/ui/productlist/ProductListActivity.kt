@@ -14,8 +14,8 @@ import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductListBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.ui.productdetail.ProductDetailActivity
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductItemClickListener
-import com.pekwerike.madeinlagos.ui.recyclerviewcomponents.productlist.ProductListRecyclerViewAdapter
+import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductItemClickListener
+import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
