@@ -17,6 +17,9 @@ import javax.inject.Inject
 class ProductListViewModel @Inject constructor(
     private val mainRepositoryAPI: MainRepositoryAPI
 ) : ViewModel() {
+    private val _filterValue = MutableLiveData<String>()
+    val filterValue: LiveData<String>
+        get() = _filterValue
 
     private val _productList = MutableLiveData<List<Product>>()
     val productList: LiveData<List<Product>>
@@ -36,7 +39,7 @@ class ProductListViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             allProducts = mainRepositoryAPI.getCachedProducts()
             withContext(Dispatchers.Main) {
-                if(allProducts.isEmpty()){
+                if (allProducts.isEmpty()) {
                     _productFetchNetworkResult.value = NetworkResult.FetchingDataFromServer
                 }
                 _productList.value = allProducts
@@ -56,6 +59,7 @@ class ProductListViewModel @Inject constructor(
     }
 
     fun filterProductList(text: String) {
+        _filterValue.value = text
         viewModelScope.launch {
             _productList.value = withContext(Dispatchers.IO) {
                 allProducts.filter {

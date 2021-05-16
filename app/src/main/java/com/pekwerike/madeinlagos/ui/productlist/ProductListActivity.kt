@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,9 +18,14 @@ import com.pekwerike.madeinlagos.ui.productdetail.ProductDetailActivity
 import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductItemClickListener
 import com.pekwerike.madeinlagos.ui.productlist.recyclerview.ProductListRecyclerViewAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ProductListActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var inputMethodManager: InputMethodManager
+
     private lateinit var productListActivityBinding: ActivityProductListBinding
     private val productListViewModel: ProductListViewModel by viewModels()
     private val productListRecyclerViewAdapter = ProductListRecyclerViewAdapter(
@@ -58,6 +64,21 @@ class ProductListActivity : AppCompatActivity() {
 
     private fun observeViewModelLiveData() {
         productListViewModel.apply {
+            filterValue.observe(this@ProductListActivity) {
+                if (it.isNotEmpty() && productList.value?.isEmpty() == true) {
+                    productListActivityBinding.productListUserLabel.apply {
+                        text = String.format(
+                            getString(
+                                R.string.no_results_found_label,
+                                it
+                            )
+                        )
+                        animate().alpha(1f)
+                    }
+                } else {
+                    productListActivityBinding.productListUserLabel.animate().alpha(0f)
+                }
+            }
             productList.observe(this@ProductListActivity) {
                 productListRecyclerViewAdapter.submitList(it)
             }
@@ -126,7 +147,7 @@ class ProductListActivity : AppCompatActivity() {
                 setOnEditorActionListener { _, actionId, _ ->
                     return@setOnEditorActionListener when (actionId) {
                         EditorInfo.IME_ACTION_SEARCH -> {
-
+                            productListViewModel.filterProductList(text.toString())
                             true
                         }
                         else -> false

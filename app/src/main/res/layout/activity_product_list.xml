@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".MainActivity">
 
 
@@ -43,6 +45,8 @@
                     android:imeOptions="actionSearch"
                     android:inputType="textFilter"
                     android:lines="1"
+                    android:nextFocusUp="@id/product_list_search_bar"
+                    android:nextFocusLeft="@id/product_list_search_bar"
                     android:maxLines="1"
                     android:padding="@dimen/textview_standard_padding" />
 

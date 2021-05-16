@@ -60,6 +60,9 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun configureLayout() {
         productDetailActivityBinding.apply {
+            productDetailSwipeToRefreshLayout.setOnRefreshListener {
+                productDetailActivityViewModel.getProductWithFreshReviewsById(productId)
+            }
             activityProductDetailsToolbar.setNavigationOnClickListener {
                 supportFinishAfterTransition()
             }
@@ -69,12 +72,13 @@ class ProductDetailActivity : AppCompatActivity() {
                     it,
                     it.transitionName
                 )
-                startActivity(Intent(
-                    this@ProductDetailActivity,
-                    ProductReviewActivity::class.java
-                ).apply {
-                    putExtra(ProductReviewActivity.EXTRA_PRODUCT_ID, productId)
-                }, options.toBundle()
+                startActivity(
+                    Intent(
+                        this@ProductDetailActivity,
+                        ProductReviewActivity::class.java
+                    ).apply {
+                        putExtra(ProductReviewActivity.EXTRA_PRODUCT_ID, productId)
+                    }, options.toBundle()
                 )
             }
             productDetailProductReviewsRecyclerView.adapter = productReviewListRecyclerViewAdapter
@@ -85,7 +89,10 @@ class ProductDetailActivity : AppCompatActivity() {
     private fun observeViewModelLiveData() {
         productDetailActivityViewModel.apply {
             currentProductInDisplay.observe(this@ProductDetailActivity) {
-                productDetailActivityBinding.product = it
+                productDetailActivityBinding.apply {
+                    productDetailSwipeToRefreshLayout.isRefreshing = false
+                    product = it
+                }
                 Glide.with(this@ProductDetailActivity)
                     .load(it.productImageUrl)
                     .listener(object : RequestListener<Drawable> {
@@ -95,12 +102,12 @@ class ProductDetailActivity : AppCompatActivity() {
                             target: Target<Drawable>?,
                             isFirstResource: Boolean
                         ): Boolean {
-                            CoroutineScope(Dispatchers.Main).launch{
+                            CoroutineScope(Dispatchers.Main).launch {
                                 Glide.with(this@ProductDetailActivity)
                                     .load(R.drawable.ic_adidas_logo_wine)
                                     .into(productDetailActivityBinding.productDetailProductImageView)
                             }
-                                startPostponedEnterTransition()
+                            startPostponedEnterTransition()
                             return false
                         }
 
