@@ -40,7 +40,7 @@ class ProductListViewModel @Inject constructor(
             allProducts = mainRepositoryAPI.getCachedProducts()
             withContext(Dispatchers.Main) {
                 if (allProducts.isEmpty()) {
-                    _productFetchNetworkResult.value = NetworkResult.FetchingDataFromServer
+                    _productFetchNetworkResult.value = NetworkResult.Loading
                 }
                 _productList.value = allProducts
             }

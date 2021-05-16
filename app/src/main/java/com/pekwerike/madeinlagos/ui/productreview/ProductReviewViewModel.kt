@@ -22,6 +22,7 @@ class ProductReviewViewModel @Inject constructor(
         get() = _reviewPostNetworkResult
 
     fun postProductReview(productId: String, userRating: Int, userReview: String) {
+        _reviewPostNetworkResult.value = NetworkResult.Loading
         viewModelScope.launch(Dispatchers.IO) {
             val postedReview = mainRepositoryAPI.postProductReview(
                 productId,

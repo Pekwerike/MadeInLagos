@@ -64,23 +64,21 @@ class ProductListActivity : AppCompatActivity() {
 
     private fun observeViewModelLiveData() {
         productListViewModel.apply {
-            filterValue.observe(this@ProductListActivity) {
-                if (it.isNotEmpty() && productList.value?.isEmpty() == true) {
+            productList.observe(this@ProductListActivity) {
+                productListRecyclerViewAdapter.submitList(it)
+                if(it.isEmpty() && filterValue.value != ""){
                     productListActivityBinding.productListUserLabel.apply {
                         text = String.format(
                             getString(
                                 R.string.no_results_found_label,
-                                it
+                                filterValue.value
                             )
                         )
                         animate().alpha(1f)
                     }
-                } else {
+                }else {
                     productListActivityBinding.productListUserLabel.animate().alpha(0f)
                 }
-            }
-            productList.observe(this@ProductListActivity) {
-                productListRecyclerViewAdapter.submitList(it)
             }
             productFetchNetworkResult.observe(this@ProductListActivity) {
                 productListActivityBinding.swipeToRefreshProductList.isRefreshing = false
@@ -113,7 +111,7 @@ class ProductListActivity : AppCompatActivity() {
                             }
                         }
                     }
-                    is NetworkResult.FetchingDataFromServer -> {
+                    is NetworkResult.Loading -> {
                         productListActivityBinding.initialFetchingDataFromServerProgressIndicator.animate()
                             .alpha(1f)
                     }

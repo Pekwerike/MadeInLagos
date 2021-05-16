@@ -12,5 +12,5 @@ sealed class NetworkResult {
 
     data class HttpError(val httpErrorStatusCode: Int) : NetworkResult()
     object NoInternetConnection : NetworkResult()
-    object FetchingDataFromServer: NetworkResult()
+    object Loading: NetworkResult()
 }

@@ -3,11 +3,14 @@ package com.pekwerike.madeinlagos.ui.productreview
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductReviewBinding
+import com.pekwerike.madeinlagos.model.NetworkResult
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_product_review.*
 
 @AndroidEntryPoint
 class ProductReviewActivity : AppCompatActivity() {
@@ -45,7 +48,30 @@ class ProductReviewActivity : AppCompatActivity() {
     private fun observeViewModelLiveData() {
         productReviewViewModel.apply {
             reviewPostNetworkResult.observe(this@ProductReviewActivity) {
+                when(it){
+                    is NetworkResult.Loading -> {
+                        activityProductReviewBinding.apply {
+                            window.statusBarColor = ContextCompat.getColor(this@ProductReviewActivity,
+                            android.R.color.darker_gray)
+                            productReviewPostingReviewProgressIndicator.animate().alpha(1f)
+                            productReviewPostingReviewScrim.animate().alpha(0.5f)
 
+                        }
+                    }
+                    is NetworkResult.Success.SingleProductReview -> {
+
+                    }
+                    is NetworkResult.NoInternetConnection -> {
+                       /* activityProductReviewBinding.apply {
+                            productReviewPostingReviewProgressIndicator.animate().alpha(0f)
+                            productReviewPostingReviewScrim.animate().alpha(0f)
+                        }*/
+                    }
+                    is NetworkResult.HttpError -> {
+
+                    }
+                    else -> {}
+                }
             }
         }
     }
