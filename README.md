@@ -30,6 +30,9 @@ MadeInLagos UI is made up of multiple activities. As opposed to the Single Activ
 ### Test 
 The test layer boasts of several instrumentation unit and JVM unit tests for various components of the app. 
 
+## Screenshots 
+<img src="https://user-images.githubusercontent.com/43956851/118416093-e3a48080-b6a5-11eb-8c67-886fb083e2a1.jpg" width="320" height="620"> <img src="https://user-images.githubusercontent.com/43956851/118416095-e56e4400-b6a5-11eb-8fc9-f73ffa1296f6.jpg" width="320" height="620"> <img src="https://user-images.githubusercontent.com/43956851/118416096-e606da80-b6a5-11eb-903c-11c429faeca7.jpg" width="320" height="620"> 
+
 ## Open Source Libraries
 - [Android jetpack libraries](https://developer.android.com/jetpack/androidx/explorer?gclid=CjwKCAjwhYOFBhBkEiwASF3KGTac0YRSxUBKOGs8ijgrUnngjG5jASGw5R09q_RvBa8o757jVzWoFRoCywYQAvD_BwE&gclsrc=aw.ds) - Jetpack is a suite of libraries to help developers follow best practices, reduce boilerplate code, and write code that works consistently across Android versions and devices so that developers can focus on the code they care about.
    - [Hilt](https://dagger.dev/hilt/) - Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project.
