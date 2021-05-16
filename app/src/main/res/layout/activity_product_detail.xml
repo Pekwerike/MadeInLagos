@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="28dp"
+            android:layout_margin="@dimen/fab_margin"
             android:contentDescription="@string/write_product_review_label"
             android:src="@drawable/ic_baseline_edit_24"
             android:transitionName="@string/post_product_review_transition_element"

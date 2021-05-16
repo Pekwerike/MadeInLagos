@@ -15,12 +15,15 @@
         android:id="@+id/product_review_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/product_review_rating_bar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         app:menu="@menu/post_review_menu"
         app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
-        app:title="Review" />
+        app:title="@string/review_label" />
 
     <androidx.appcompat.widget.AppCompatRatingBar
         android:id="@+id/product_review_rating_bar"
@@ -30,9 +33,11 @@
         android:layout_margin="@dimen/standard_margin"
         android:numStars="5"
         android:stepSize="1"
+        app:layout_constraintBottom_toTopOf="@+id/product_review_edit_text"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/product_review_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/product_review_toolbar" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/product_review_edit_text"
@@ -43,11 +48,14 @@
         android:gravity="top"
         android:hint="@string/how_was_your_experience"
         android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/product_review_post_state_user_info_label_textview"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/product_review_rating_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/product_review_rating_bar" />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/product_review_post_state_user_info_label_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/standard_margin"

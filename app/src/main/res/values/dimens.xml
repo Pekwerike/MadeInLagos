@@ -2,4 +2,5 @@
 <resources>
     <dimen name="textview_standard_padding">4dp</dimen>
     <dimen name="standard_margin">16dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
 </resources>

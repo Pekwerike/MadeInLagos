@@ -1,6 +1,8 @@
 package com.pekwerike.madeinlagos.ui.productreview
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.activity.result.ActivityResult
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.google.android.material.transition.platform.MaterialContainerTransform
@@ -16,6 +19,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.pekwerike.madeinlagos.R
 import com.pekwerike.madeinlagos.databinding.ActivityProductReviewBinding
 import com.pekwerike.madeinlagos.model.NetworkResult
+import com.pekwerike.madeinlagos.ui.productdetail.ProductDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_product_review.*
 import javax.inject.Inject
@@ -86,6 +90,9 @@ class ProductReviewActivity : AppCompatActivity() {
                 if (shouldShowScrim) {
                     // do nothing
                 } else {
+                    setResult(Activity.RESULT_OK, Intent().apply {
+                        putExtra(ProductDetailActivity.REFRESH_REVIEW_LIST_EXTRA, true)
+                    })
                     supportFinishAfterTransition()
                 }
             }
@@ -115,16 +122,36 @@ class ProductReviewActivity : AppCompatActivity() {
                 when (it) {
                     is NetworkResult.Loading -> {
                         showLoadingScrim(true)
+                        activityProductReviewBinding
+                            .productReviewPostStateUserInfoLabelTextview
+                            .animate()
+                            .alpha(0f)
                     }
                     is NetworkResult.Success.SingleProductReview -> {
                         showLoadingScrim(false)
+                        activityProductReviewBinding
+                            .productReviewPostStateUserInfoLabelTextview
+                            .animate()
+                            .alpha(0f)
+
+                        setResult(Activity.RESULT_OK, Intent().apply {
+                            putExtra(ProductDetailActivity.REFRESH_REVIEW_LIST_EXTRA, true)
+                        })
                         supportFinishAfterTransition()
                     }
                     is NetworkResult.NoInternetConnection -> {
                         showLoadingScrim(false)
+                        activityProductReviewBinding.productReviewPostStateUserInfoLabelTextview.apply {
+                            text = getString(R.string.no_internet_connection_label)
+                            animate().alpha(1f)
+                        }
                     }
                     is NetworkResult.HttpError -> {
                         showLoadingScrim(false)
+                        activityProductReviewBinding.productReviewPostStateUserInfoLabelTextview.apply {
+                            text = getString(R.string.server_downtime)
+                            animate().alpha(1f)
+                        }
                     }
                     else -> {
                         showLoadingScrim(false)
@@ -140,17 +167,26 @@ class ProductReviewActivity : AppCompatActivity() {
             productReviewToolbar.apply {
                 setOnMenuItemClickListener {
                     if (it.itemId == R.id.post_review_menu_item) {
+                        inputMethodManager.hideSoftInputFromWindow(
+                            windowToken,
+                            0
+                        )
                         val userRating = productReviewRatingBar.rating
                         val userReview = productReviewEditText.text.toString()
-                        productReviewViewModel.postProductReview(
-                            productId,
-                            userRating.toInt(),
-                            userReview
-                        )
+                        if (userRating != 0f) {
+                            productReviewViewModel.postProductReview(
+                                productId,
+                                userRating.toInt(),
+                                userReview
+                            )
+                        }
                         true
                     } else false
                 }
                 setNavigationOnClickListener {
+                    setResult(Activity.RESULT_OK, Intent().apply {
+                        putExtra(ProductDetailActivity.REFRESH_REVIEW_LIST_EXTRA, true)
+                    })
                     supportFinishAfterTransition()
                 }
             }

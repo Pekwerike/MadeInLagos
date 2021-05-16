@@ -16,4 +16,5 @@
     <string name="how_was_your_experience">How was your experience?</string>
     <string name="post_product_review_transition_element">postProductReviewTransitionElement</string>
     <string name="game_one">game_one</string>
+    <string name="review_label">Review</string>
 </resources>

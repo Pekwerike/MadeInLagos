@@ -1,11 +1,14 @@
 package com.pekwerike.madeinlagos.ui.productdetail
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -27,8 +30,17 @@ import kotlinx.coroutines.launch
 class ProductDetailActivity : AppCompatActivity() {
     companion object {
         const val EXTRA_PRODUCT_ID = "ExtraProductId"
+        const val REFRESH_REVIEW_LIST_EXTRA = "RefreshReviewList"
     }
 
+    private val intentLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (result.data?.getBooleanExtra(REFRESH_REVIEW_LIST_EXTRA, false) == true) {
+                    productDetailActivityViewModel.getProductWithFreshReviewsById(productId)
+                }
+            }
+        }
     private val productDetailActivityViewModel: ProductDetailActivityViewModel by viewModels()
     private lateinit var productDetailActivityBinding: ActivityProductDetailBinding
     private lateinit var productId: String
@@ -68,18 +80,19 @@ class ProductDetailActivity : AppCompatActivity() {
                 supportFinishAfterTransition()
             }
             productDetailPostProductReviewFab.setOnClickListener {
-                val options = ActivityOptions.makeSceneTransitionAnimation(
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     this@ProductDetailActivity,
                     it,
                     it.transitionName
                 )
-                startActivity(
+
+                intentLauncher.launch(
                     Intent(
                         this@ProductDetailActivity,
                         ProductReviewActivity::class.java
                     ).apply {
                         putExtra(ProductReviewActivity.EXTRA_PRODUCT_ID, productId)
-                    }, options.toBundle()
+                    }, options
                 )
             }
             productDetailProductReviewsRecyclerView.adapter = productReviewListRecyclerViewAdapter
@@ -89,8 +102,8 @@ class ProductDetailActivity : AppCompatActivity() {
 
     private fun observeViewModelLiveData() {
         productDetailActivityViewModel.apply {
-            isConnectedToInternet.observe(this@ProductDetailActivity){
-                if(it == false){
+            isConnectedToInternet.observe(this@ProductDetailActivity) {
+                if (it == false) {
                     startPostponedEnterTransition()
                 }
             }
@@ -102,7 +115,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 Glide.with(this@ProductDetailActivity)
                     .load(it.productImageUrl)
                     .placeholder(R.drawable.ic_adidas_logo_wine)
-                    .addListener(object:  RequestListener<Drawable> {
+                    .addListener(object : RequestListener<Drawable> {
                         override fun onLoadFailed(
                             e: GlideException?,
                             model: Any?,

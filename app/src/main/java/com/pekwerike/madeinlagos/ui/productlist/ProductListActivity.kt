@@ -34,23 +34,23 @@ class ProductListActivity : AppCompatActivity() {
     private val productListRecyclerViewAdapter = ProductListRecyclerViewAdapter(
         ProductItemClickListener { product, clickedView ->
 
-                // only use shared element transitioning when the app is in portrait mode
-                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                    val options = ActivityOptions.makeSceneTransitionAnimation(
-                        this@ProductListActivity,
-                        clickedView,
-                        getString(R.string.game_one)
-                    )
-                    Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
-                        it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
-                        startActivity(it, options.toBundle())
-                    }
-                } else {
-                    Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
-                        it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
-                        startActivity(it)
-                    }
+            // only use shared element transitioning when the app is in portrait mode
+            if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                val options = ActivityOptions.makeSceneTransitionAnimation(
+                    this@ProductListActivity,
+                    clickedView,
+                    getString(R.string.game_one)
+                )
+                Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
+                    it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
+                    startActivity(it, options.toBundle())
                 }
+            } else {
+                Intent(this@ProductListActivity, ProductDetailActivity::class.java).also {
+                    it.putExtra(ProductDetailActivity.EXTRA_PRODUCT_ID, product.id)
+                    startActivity(it)
+                }
+            }
         }
     )
 
@@ -70,7 +70,7 @@ class ProductListActivity : AppCompatActivity() {
         productListViewModel.apply {
             productList.observe(this@ProductListActivity) {
                 productListRecyclerViewAdapter.submitList(it)
-                if(it.isEmpty() && !filterValue.value.isNullOrEmpty()){
+                if (it.isEmpty() && !filterValue.value.isNullOrEmpty()) {
                     productListActivityBinding.productListUserLabel.apply {
                         text = String.format(
                             getString(
@@ -80,7 +80,7 @@ class ProductListActivity : AppCompatActivity() {
                         )
                         animate().alpha(1f)
                     }
-                }else {
+                } else {
                     productListActivityBinding.productListUserLabel.animate().alpha(0f)
                 }
             }
@@ -166,6 +166,10 @@ class ProductListActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+        /* when the user presses the back button, to improve the UX
+         if the user is currently searching for a product take the user back to the
+         original state of the app product list
+        */
         if (productListActivityBinding.productListSearchBar.text.toString().isNotEmpty()) {
             productListActivityBinding.productListSearchBar.apply {
                 setText("")
