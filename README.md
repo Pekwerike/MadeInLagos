@@ -44,3 +44,7 @@ The test layer boasts of several instrumentation unit and JVM unit tests for var
 
 ## How to install and run the app?
 Clone this repository and open it using android studio 4.2 or higher.
+
+## TODOs
+1. UI Tests 
+2. Integrate CI/CD 
