@@ -28,7 +28,7 @@ MadeInLagos uses Dagger-Hilt for automated dependency injection and dependency m
 MadeInLagos UI is made up of multiple activities. As opposed to the Single Activity Multiple fragment patterns, using multiple activities for this project provided a higher level of stability(less system bug encounter), faster configuration, and better integration with the android material design container transformation library. 
 
 ### Test 
-The test layer boasts of several instrumentation unit and JVM unit tests for various components of the app. 
+The test layer boasts of several instrumentation unit and local unit tests for various components of the app. 
 
 ## Screenshots 
 <img src="https://user-images.githubusercontent.com/43956851/118416093-e3a48080-b6a5-11eb-8c67-886fb083e2a1.jpg" width="310" height="640"> <img src="https://user-images.githubusercontent.com/43956851/118416095-e56e4400-b6a5-11eb-8fc9-f73ffa1296f6.jpg" width="310" height="640"> <img src="https://user-images.githubusercontent.com/43956851/118416096-e606da80-b6a5-11eb-903c-11c429faeca7.jpg" width="310" height="640"> 
