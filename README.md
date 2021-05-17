@@ -1,5 +1,5 @@
 # MadeInLagos
-MadeInLagos is an android application that displays a collection of products for a user to buy, 
+MadeInLagos is an android application that displays a collection of products for a user to buy.
 
 ## Architecture  
 MadeInLagos was built with the Model View ViewModel (MVVM) architectural pattern. MVVM architecture allows the app to utilize the long-term benefits that come with separation of concerns, easier testing for individual components, and emphasis on SOLID principles
