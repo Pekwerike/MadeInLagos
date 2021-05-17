@@ -15,7 +15,7 @@ MadeInLagos utilizes the Room persistence library to cache the network results i
 MadeInLagos defines the Main Repository API which specifies the various operations for the app Main Repository. The main repository layer acts as a mediator between the network layer and the database layer. This layer is also responsible for providing data to the ViewModels.
 
 ### ViewModels
-The app ViewModels hold the UI states for activities or other possible UI controllers like fragments. By using this pattern, the app can survive configuration changes, theme switches, and other system events that can lead to the destruction of an activity. 
+The app ViewModels hold the UI states for activities or other possible UI controllers like fragments. By using this pattern, the app can survive configuration changes, theme switches, and other system events that can lead to the destruction of an activity/ UI controller. 
 
 ### Concurrency
 To make the most of the device processor and bestow on the app a buttery smooth experience, Kotlin coroutines and flow, along with other java functionalities like
