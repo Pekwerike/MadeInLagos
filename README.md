@@ -6,7 +6,7 @@ MadeInLagos was built with the Model View ViewModel (MVVM) architectural pattern
 
 ## Application layers
 ### Network 
-The app uses Retrofit to make HTTP requests to the server and Retrofit-Moshi converter to parse HTTP responses into Kotlin objects.
+The app uses Retrofit to make HTTP requests to https://tour.silent.ws/product and Retrofit-Moshi converter to parse HTTP responses into Kotlin objects.
 
 ### Cache/Persistence
 MadeInLagos utilizes the Room persistence library to cache the network results into an on-device database. The database is made up of two tables the Product table and the Product Review table. The app defines a one-many relationship between the product table and the product review table.
