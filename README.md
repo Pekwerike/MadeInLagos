@@ -22,7 +22,7 @@ To make the most of the device processor and bestow on the app a buttery smooth 
 synchronization are used for asynchronous operations.
 
 ### Dependency Injection and Management
-MadeInLagos uses Dagger-Hilt for automated dependency injection and dependency management across all the other layers of the app.
+MadeInLagos uses Dagger-Hilt for automated dependency injection and dependency management across all the layers of the app.
 
 ### UI
 MadeInLagos UI is made up of multiple activities. As opposed to the Single Activity Multiple fragment patterns, using multiple activities for this project provided a higher level of stability(less system bug encounter), faster configuration, and better integration with the android material design container transformation library. 
