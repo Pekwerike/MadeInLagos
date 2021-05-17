@@ -75,7 +75,7 @@ class ProductReviewActivity : AppCompatActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     window.statusBarColor = ContextCompat.getColor(
                         this@ProductReviewActivity,
-                        R.color.on_background_color
+                        R.color.background_color
                     )
                 }
                 productReviewPostingReviewProgressIndicator.animate().alpha(0f)
