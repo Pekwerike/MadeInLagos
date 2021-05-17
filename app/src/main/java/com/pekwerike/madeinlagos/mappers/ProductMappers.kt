@@ -11,7 +11,7 @@ This file contains extension functions that makes it easier to convert between R
 and normal kotlin data classes
 */
 
-fun List<ProductEntity>.toProductList(): List<Product> = map { productEntity: ProductEntity ->
+fun List<ProductEntity>.productEntityListToProductList(): List<Product> = map { productEntity: ProductEntity ->
     Product(
         id = productEntity.productId,
         name = productEntity.name,
@@ -23,7 +23,7 @@ fun List<ProductEntity>.toProductList(): List<Product> = map { productEntity: Pr
 }
 
 
-fun List<Product>.toProductEntityList(): List<ProductEntity> = map { product: Product ->
+fun List<Product>.productListToProductEntityList(): List<ProductEntity> = map { product: Product ->
     ProductEntity(
         productId = product.id,
         name = product.name,
@@ -43,11 +43,11 @@ fun List<ProductWithReviews>.productWithReviewsToProductList(): List<Product> =
             currency = productWithReviews.product.currency,
             price = productWithReviews.product.price,
             productImageUrl = productWithReviews.product.productImageUrl,
-            productReviews = productWithReviews.reviews.toProductReviewList()
+            productReviews = productWithReviews.reviews.productReviewEntityListToProductReviewList()
         )
     }
 
-fun List<ProductReviewEntity>.toProductReviewList(): List<ProductReview> =
+fun List<ProductReviewEntity>.productReviewEntityListToProductReviewList(): List<ProductReview> =
     map { productReviewEntity: ProductReviewEntity ->
         ProductReview(
             productId = productReviewEntity.productId,
@@ -74,10 +74,10 @@ fun ProductWithReviews.productWithReviewsToProduct(): Product =
         currency = product.currency,
         price = product.price,
         productImageUrl = product.productImageUrl,
-        productReviews = reviews.toProductReviewList()
+        productReviews = reviews.productReviewEntityListToProductReviewList()
     )
 
-fun ProductEntity.toProduct(): Product = Product(
+fun ProductEntity.productEntityToProduct(): Product = Product(
     id = productId,
     name = name,
     description = description,
@@ -93,7 +93,7 @@ fun ProductReview.productReviewToProductReviewEntity(): ProductReviewEntity =
         text = text
     )
 
-fun Product.toProductEntity(): ProductEntity = ProductEntity(
+fun Product.productToProductEntity(): ProductEntity = ProductEntity(
     productId = id,
     name = name,
     description = description,

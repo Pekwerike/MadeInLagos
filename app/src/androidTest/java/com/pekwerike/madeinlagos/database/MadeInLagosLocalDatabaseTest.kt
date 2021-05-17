@@ -53,7 +53,7 @@ class MadeInLagosLocalDatabaseTest {
     fun testInsertProductListIntoDatabase() {
         runBlocking {
             productDao.insertAllProducts(
-                productDataSource.getProducts().toProductEntityList()
+                productDataSource.getProducts().productListToProductEntityList()
             )
             assertEquals(23, productDao.getAllProducts().first().size)
             assertEquals(23, productDao.getAllProductWithReviewsAsFlow().first().size)
@@ -65,7 +65,7 @@ class MadeInLagosLocalDatabaseTest {
     fun test_getProductWithReviewsByProductId() {
         runBlocking {
             productDao.insertAllProducts(
-                productDataSource.getProducts().toProductEntityList()
+                productDataSource.getProducts().productListToProductEntityList()
             )
             val product: Product =
                 productDao.getProductWithReviewsByProductId(productId = "FI444").productWithReviewsToProduct()
@@ -80,7 +80,7 @@ class MadeInLagosLocalDatabaseTest {
     fun test_insertProductReview() {
         runBlocking {
             productDao.insertAllProducts(
-                productDataSource.getProducts().toProductEntityList()
+                productDataSource.getProducts().productListToProductEntityList()
             )
             productReviewDao.insertProductReviewEntity(
                 ProductReview(
@@ -102,7 +102,7 @@ class MadeInLagosLocalDatabaseTest {
     fun testThat_deleting_a_product_deletes_all_the_reviews_related_to_the_product() {
         runBlocking {
             productDao.insertAllProducts(
-                productDataSource.getProducts().toProductEntityList()
+                productDataSource.getProducts().productListToProductEntityList()
             )
 
             productReviewDao.insertProductReviewEntityList(
@@ -125,7 +125,7 @@ class MadeInLagosLocalDatabaseTest {
 
             productDao.deleteAllProductsWithReviews()
             val allProductReviews: List<ProductReview> =
-                productReviewDao.getAllProductReviews().first().toProductReviewList()
+                productReviewDao.getAllProductReviews().first().productReviewEntityListToProductReviewList()
             assertEquals(2, product.productReviews.size)
             assert(allProductReviews.isEmpty())
         }

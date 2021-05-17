@@ -1,11 +1,8 @@
 package com.pekwerike.madeinlagos.repository.impl
 
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
 import com.pekwerike.madeinlagos.database.ProductDAO
 import com.pekwerike.madeinlagos.database.ProductReviewDAO
-import com.pekwerike.madeinlagos.database.ProductWithReviews
 import com.pekwerike.madeinlagos.mappers.*
 import com.pekwerike.madeinlagos.model.NetworkResult
 import com.pekwerike.madeinlagos.model.Product
@@ -37,7 +34,7 @@ class MadeInLagosProductRepository @Inject constructor(
         val networkResult = networkProductService.getAllProduct()
         if (networkResult is NetworkResult.Success.AllProducts) {
             // insert the retrieved products into the local cache
-            productDao.refreshProductList(networkResult.products.toProductEntityList())
+            productDao.refreshProductList(networkResult.products.productListToProductEntityList())
             // all changes will be notified via the allProductsWithReviews flow
         }
         return networkResult
@@ -99,7 +96,7 @@ class MadeInLagosProductRepository @Inject constructor(
                         productImageUrl = allImages.random(),
                         productReviews = it.productReviews
                     )
-                }.toProductEntityList())
+                }.productListToProductEntityList())
 
                 // retrieve the list of products from the database and return it
                 val productList =
