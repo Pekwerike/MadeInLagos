@@ -1,18 +1,15 @@
 package com.pekwerike.madeinlagos.database
 
 
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Transaction
 
 @Dao
 interface ProductReviewDAO {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductReviewEntity(productReviewEntity: ProductReviewEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProductReviewEntityList(productReviewEntity: List<ProductReviewEntity>)
 
     @Query("SELECT * FROM product_review_table ORDER BY product_review_id DESC")

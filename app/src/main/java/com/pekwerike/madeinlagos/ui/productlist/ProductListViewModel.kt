@@ -63,9 +63,9 @@ class ProductListViewModel @Inject constructor(
         viewModelScope.launch {
             _productList.value = withContext(Dispatchers.IO) {
                 allProducts.filter {
-                    it.name.contains(text)
-                            || it.description.contains(text)
-                            || it.productImageUrl.contains(text)
+                    it.name.contains(text, true)
+                            || it.description.contains(text, true)
+                            || it.productImageUrl.contains(text, true)
                 }
             }!!
         }
